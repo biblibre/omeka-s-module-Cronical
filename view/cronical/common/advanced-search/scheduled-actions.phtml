@@ -1,0 +1,91 @@
+<?php
+/**
+ * @var array $query
+ */
+?>
+<div class="field">
+    <div class="field-meta">
+        <label for="action"><?= $this->escapeHtml($this->translate('Search by action')) ?></label>
+    </div>
+    <div class="inputs">
+        <?php
+        $actionSelect = $this->cronical()->getActionSelect([
+            'name' => 'action',
+            'options' => [
+                'empty_option' => '',
+            ],
+        ]);
+        $actionSelect->setValue($query['action'] ?? '');
+        ?>
+        <?= $this->formElement($actionSelect) ?>
+    </div>
+</div>
+
+<?php
+$ownerIds = $this->api()->search('cronical_scheduled_actions', [], ['returnScalar' => 'owner'])->getContent();
+$ownerIds = array_values(array_unique($ownerIds));
+$owners = $this->api()->search('users', ['id' => $ownerIds])->getContent();
+?>
+
+<div class="field">
+    <div class="field-meta">
+        <label><?= $this->escapeHtml($this->translate('Owner')) ?></label>
+    </div>
+    <div class="inputs">
+        <select name="owner_id">
+            <option value=""></option>
+            <?php foreach ($owners as $owner): ?>
+                <option value="<?= $this->escapeHtml($owner->id()) ?>" <?= $owner->id() == ($query['owner_id'] ?? '') ? 'selected' : '' ?>><?= $this->escapeHtml(sprintf('%s (%s)', $owner->name(), $owner->email())) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="field">
+    <div class="field-meta">
+        <label><?= $this->escapeHtml($this->translate('Is active')) ?></label>
+    </div>
+    <div class="inputs">
+        <select name="is_active">
+            <option value=""></option>
+            <option value="0" <?= 0 == ($query['is_active'] ?? '') ? 'selected' : '' ?>><?= $this->escapeHtml($this->translate('No')) ?></option>
+            <option value="1" <?= 1 == ($query['is_active'] ?? '') ? 'selected' : '' ?>><?= $this->escapeHtml($this->translate('Yes')) ?></option>
+        </select>
+    </div>
+</div>
+
+<div class="field">
+    <div class="field-meta">
+        <label><?= $this->escapeHtml($this->translate('Is a system action')) ?></label>
+    </div>
+    <div class="inputs">
+        <select name="is_system">
+            <option value=""></option>
+            <option value="0" <?= 0 == ($query['is_system'] ?? '') ? 'selected' : '' ?>><?= $this->escapeHtml($this->translate('No')) ?></option>
+            <option value="1" <?= 1 == ($query['is_system'] ?? '') ? 'selected' : '' ?>><?= $this->escapeHtml($this->translate('Yes')) ?></option>
+        </select>
+    </div>
+</div>
+
+<?php
+$latestRunStartedAfter = new Laminas\Form\Element\Date('latest_run_started_after');
+$latestRunStartedAfter->setLabel('Latest run started after'); // @translate
+$latestRunStartedAfter->setValue($query['latest_run_started_after'] ?? '');
+echo $this->formRow($latestRunStartedAfter);
+
+$latestRunStartedBefore = new Laminas\Form\Element\Date('latest_run_started_before');
+$latestRunStartedBefore->setLabel('Latest run started before'); // @translate
+$latestRunStartedBefore->setValue($query['latest_run_started_before'] ?? '');
+echo $this->formRow($latestRunStartedBefore);
+
+$scheduledAfter = new Laminas\Form\Element\Date('scheduled_after');
+$scheduledAfter->setLabel('Next run scheduled after'); // @translate
+$scheduledAfter->setValue($query['scheduled_after'] ?? '');
+echo $this->formRow($scheduledAfter);
+
+$scheduledBefore = new Laminas\Form\Element\Date('scheduled_before');
+$scheduledBefore->setLabel('Next run scheduled before'); // @translate
+$scheduledBefore->setValue($query['scheduled_before'] ?? '');
+echo $this->formRow($scheduledBefore);
+
+?>

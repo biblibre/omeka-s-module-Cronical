@@ -1,0 +1,252 @@
+<?php
+/**
+ * @var Cronical\Api\Representation\ScheduledActionRepresentation[] $scheduledActions
+ */
+
+$this->htmlElement('body')->appendAttribute('class', 'browse cronical cronical-scheduled-actions');
+$userIsAllowedBatchUpdate = $this->userIsAllowed('Cronical\Api\Adapter\ScheduledActionAdapter', 'batch_update');
+$userIsAllowedBatchDelete = $this->userIsAllowed('Cronical\Api\Adapter\ScheduledActionAdapter', 'batch_delete');
+?>
+
+<?= $this->pageTitle($this->translate('Scheduled actions')) ?>
+
+<?= $this->cronicalScheduledActionSearchFilters() ?>
+
+<div class="browse-controls">
+    <?= $this->pagination() ?>
+    <?= $this->hyperlink($this->translate('Advanced search'), $this->url('admin/cronical/default', ['controller' => 'scheduled-action', 'action' => 'search'], ['query' => $this->params()->fromQuery()]), ['class' => 'advanced-search']); ?>
+    <?= $this->browse()->renderSortSelector('cronical_scheduled_actions') ?>
+</div>
+
+<div id="page-actions">
+    <?php if ($this->userIsAllowed('Cronical\Api\Adapter\ScheduledActionAdapter', 'create')): ?>
+        <?= $this->hyperlink($this->translate('Add new scheduled action'), $this->url('admin/cronical/default', ['controller' => 'scheduled-action', 'action' => 'add']), ['class' => 'button']) ?>
+    <?php endif; ?>
+</div>
+
+<?php $this->trigger('view.browse.before'); ?>
+
+<?php if (count($scheduledActions)): ?>
+    <form method="post" id="batch-form" class="disable-unsaved-warning">
+        <?php if ($userIsAllowedBatchUpdate || $userIsAllowedBatchDelete): ?>
+            <div class="batch-inputs">
+                <select class="batch-actions-select" name="batch_action" aria-label="<?= $this->escapeHtml($this->translate('Batch actions')) ?>">
+                    <option value="default"><?= $this->escapeHtml($this->translate('Batch actions')) ?></option>
+
+                    <?php if ($userIsAllowedBatchUpdate): ?>
+                        <option value="update-selected" class="batch-selected" disabled><?= $this->escapeHtml($this->translate('Edit selected')) ?></option>
+                        <option value="update-all"><?= $this->escapeHtml($this->translate('Edit all')) ?></option>
+                    <?php endif; ?>
+
+                    <?php if ($userIsAllowedBatchDelete): ?>
+                        <option value="delete-selected" class="batch-selected" disabled><?= $this->escapeHtml($this->translate('Delete selected')) ?></option>
+                        <option value="delete-all"><?= $this->escapeHtml($this->translate('Delete all')) ?></option>
+                    <?php endif; ?>
+                </select>
+
+                <div class="batch-actions">
+                    <button type="button" class="default active" disabled><?= $this->escapeHtml($this->translate('Go')) ?></button>
+
+                    <?php if ($userIsAllowedBatchUpdate): ?>
+                        <input type="submit" class="update-selected" value="<?= $this->escapeHtml($this->translate('Go')) ?>" formaction="<?= $this->escapeHtml($this->url('admin/cronical/default', ['controller' => 'scheduled-action', 'action' => 'batch-edit'])) ?>">
+                        <input type="submit" class="update-all" value="<?= $this->escapeHtml($this->translate('Go')) ?>" formaction="<?= $this->escapeHtml($this->url('admin/cronical/default', ['controller' => 'scheduled-action', 'action' => 'batch-edit-all'])) ?>">
+                    <?php endif; ?>
+
+                    <input type="hidden" name="query" class="batch-query" value="<?= $this->escapeHtml(json_encode($this->params()->fromQuery())) ?>">
+
+                    <?php if ($userIsAllowedBatchDelete): ?>
+                        <a class="delete button sidebar-content delete-selected" data-sidebar-selector="#sidebar-delete-selected"><?= $this->escapeHtml($this->translate('Go')) ?></a>
+                        <a class="delete button sidebar-content delete-all" data-sidebar-selector="#sidebar-delete-all"><?= $this->escapeHtml($this->translate('Go')) ?></a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <table class="tablesaw batch-edit" data-tablesaw-mode="stack">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="select-all">
+                        <?= $this->escapeHtml($this->translate('Name')) ?>
+                    </th>
+                    <th><?= $this->escapeHtml($this->translate('Latest run')) ?></th>
+                    <th><?= $this->escapeHtml($this->translate('Next run')) ?></th>
+                    <th><?= $this->escapeHtml($this->translate('Owner')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($scheduledActions as $scheduledAction): ?>
+                    <?php $userIsAllowedUpdate = $scheduledAction->userIsAllowed('update'); ?>
+                    <?php $userIsAllowedDelete = $scheduledAction->userIsAllowed('delete'); ?>
+                    <?php $action = $this->cronical()->getAction($scheduledAction->action()); ?>
+                    <tr>
+                        <td>
+                            <?php if ($userIsAllowedBatchUpdate || $userIsAllowedBatchDelete): ?>
+                                <input type="checkbox" name="resource_ids[]" value="<?= $scheduledAction->id() ?>"<?php if (!($userIsAllowedUpdate || $userIsAllowedDelete)): ?> disabled="disabled"<?php endif; ?>>
+                            <?php endif; ?>
+
+                            <span>
+                                <?= $scheduledAction->link($scheduledAction->name()) ?>
+
+                                <?php if (!$scheduledAction->isActive()): ?>
+                                    <?= $this->escapeHtml($this->translate('(inactive)')) ?>
+                                <?php endif; ?>
+
+                                <?php if ($action instanceof Cronical\Action\Unknown): ?>
+                                    <span title="<?= $this->escapeHtml(sprintf($this->translate('Unknown action: %s'), $scheduledAction->action())) ?>">
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                    </span>
+                                <?php endif; ?>
+                            </span>
+
+                            <ul class="actions">
+                                <?php $this->trigger('view.browse.actions', ['resource' => $scheduledAction]); ?>
+
+                                <?php if (!$scheduledAction->isSystem()): ?>
+                                    <?php if ($userIsAllowedUpdate): ?>
+                                        <li><?= $scheduledAction->link('', 'edit', [
+                                            'class' => 'o-icon-edit',
+                                            'title' => $this->translate('Edit'),
+                                        ]) ?></li>
+                                    <?php endif; ?>
+
+                                    <?php if ($userIsAllowedDelete): ?>
+                                        <li><?= $this->hyperlink('', '#', [
+                                            'data-sidebar-content-url' => $scheduledAction->url('delete-confirm'),
+                                            'class' => 'o-icon-delete sidebar-content',
+                                            'title' => $this->translate('Delete'),
+                                            'data-sidebar-selector' => '#sidebar-delete-selected',
+                                        ]) ?></li>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+
+                                <li><?= $this->hyperlink('', '#', [
+                                    'data-sidebar-content-url' => $scheduledAction->url('show-details'),
+                                    'class' => 'o-icon-more sidebar-content',
+                                    'title' => $this->translate('Details'),
+                                    'data-sidebar-selector' => '#sidebar',
+                                ]) ?></li>
+                            </ul>
+                        </td>
+                        <td>
+                            <?php $latestRun = $scheduledAction->latestRun() ?>
+                            <?php if ($latestRun): ?>
+                                <span>
+                                    <?= $this->i18n()->dateFormat($latestRun->started(), 'full', 'short') ?>
+                                    ·
+                                    <?= $this->escapeHtml($this->translate($latestRun->statusLabel())) ?>
+                                    <?php $job = $latestRun->job(); ?>
+                                    <?php if ($job): ?>
+                                        <br>
+                                        <?= $job->link(sprintf('Job #%d', $job->id())) ?>
+                                        ·
+                                        <?= $this->escapeHtml($this->translate($job->statusLabel())) ?>
+                                    <?php endif; ?>
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                        <td><?= $this->i18n()->dateFormat($scheduledAction->scheduled(), 'full', 'short') ?></td>
+                        <td><?= $scheduledAction->owner()->link($scheduledAction->owner()->name()) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </form>
+
+    <?php $this->trigger('view.browse.after'); ?>
+
+    <div class="browse-controls">
+        <?= $this->pagination() ?>
+    </div>
+
+    <p>
+        <strong><?= $this->escapeHtml($this->translate('Last time cronical was executed:')) ?></strong>
+        <?php if ($cronical_latest_run = $this->setting('cronical_latest_run')): ?>
+            <?php
+            $latestRun = new DateTime($cronical_latest_run);
+            echo $this->i18n()->dateFormat($latestRun, 'full', 'short');
+            ?>
+        <?php else: ?>
+            <?= $this->escapeHtml($this->translate('never')) ?>
+        <?php endif; ?>
+    </p>
+
+    <div id="sidebar" class="sidebar">
+        <?= $this->hyperlink('', '#', [
+            'class' => 'sidebar-close o-icon-close',
+            'title' => $this->translate('Close'),
+        ]) ?>
+
+        <div class="sidebar-content"></div>
+    </div>
+
+    <?php if ($userIsAllowedBatchDelete): ?>
+        <div id="sidebar-delete-selected" class="sidebar">
+            <?= $this->hyperlink('', '#', [
+                'class' => 'sidebar-close o-icon-close',
+                'title' => $this->translate('Close'),
+            ]) ?>
+            <div class="sidebar-content">
+                <div id="sidebar-confirm">
+                    <h3><?= $this->escapeHtml($this->translate('Delete scheduled actions')) ?></h3>
+                    <p><?= $this->escapeHtml($this->translate('Are you sure you would like to delete the selected scheduled actions?')) ?></p>
+                    <p class="error"><?= sprintf(
+                        $this->escapeHtml($this->translate('%1$s: this action will permanently delete %2$s scheduled actions and cannot be undone.')),
+                        sprintf('<strong>%s</strong>', $this->escapeHtml($this->translate('Warning'))),
+                        '<strong><span id="delete-selected-count"></span></strong>'
+                    ); ?></p>
+                    <?= $this->form($this->formDeleteSelected) ?>
+                </div>
+            </div>
+        </div>
+
+        <div id="sidebar-delete-all" class="sidebar">
+            <?= $this->hyperlink('', '#', [
+                'class' => 'sidebar-close o-icon-close',
+                'title' => $this->translate('Close'),
+            ]) ?>
+            <div class="sidebar-content">
+                <div id="sidebar-confirm">
+                    <h3><?= $this->escapeHtml($this->translate('Delete scheduled actions')) ?></h3>
+                    <p><?= $this->escapeHtml($this->translate('Are you sure you would like to delete all scheduled actions on all pages of this result?')) ?></p>
+                    <p class="error"><?= sprintf(
+                        $this->escapeHtml($this->translate('%1$s: this action will permanently delete %2$s scheduled actions and cannot be undone.')),
+                        sprintf('<strong>%s</strong>', $this->escapeHtml($this->translate('Warning'))),
+                        sprintf('<strong>%s</strong>', number_format($this->pagination()->getPaginator()->getTotalCount()))
+                    ); ?></p>
+                    <label><input type="checkbox" name="confirm-delete-all-check"> <?= $this->escapeHtml($this->translate('Are you sure?')) ?></label>
+                    <?= $this->form($this->formDeleteAll) ?>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        // Complete the batch delete form after confirmation.
+        $('#confirm-delete-selected, #confirm-delete-all').on('submit', function(e) {
+            var confirmForm = $(this);
+            if ('confirm-delete-all' === this.id) {
+                confirmForm.append($('.batch-query').clone());
+            } else {
+                $('#batch-form').find('input[name="resource_ids[]"]:checked:not(:disabled)').each(function() {
+                    confirmForm.append($(this).clone().prop('disabled', false).attr('type', 'hidden'));
+                });
+            }
+        });
+        $('.delete-all').on('click', function(e) {
+            Omeka.closeSidebar($('#sidebar-delete-selected'));
+        });
+        $('.delete-selected').on('click', function(e) {
+            Omeka.closeSidebar($('#sidebar-delete-all'));
+            var inputs = $('input[name="resource_ids[]"]');
+            $('#delete-selected-count').text(inputs.filter(':checked').length);
+        });
+        $('#sidebar-delete-all').on('click', 'input[name="confirm-delete-all-check"]', function(e) {
+            $('#confirm-delete-all input[type="submit"]').prop('disabled', this.checked ? false : true);
+        });
+        </script>
+    <?php endif; ?>
+<?php else: ?>
+    <div class="no-resources">
+        <p><?= $this->escapeHtml($this->translate('Omeka could not find any scheduled actions.')) ?></p>
+    </div>
+<?php endif; ?>

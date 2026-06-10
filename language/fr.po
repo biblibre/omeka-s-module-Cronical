@@ -1,0 +1,483 @@
+# French translations for PACKAGE package.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-25 10:19+0200\n"
+"PO-Revision-Date: 2026-06-25 10:58+0200\n"
+"Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.6\n"
+
+#: src/View/Helper/ScheduledActionRunSearchFilters.php:40
+#: view/cronical/admin/scheduled-action-run/browse.phtml:55
+#: view/cronical/admin/scheduled-action-run/show-details.phtml:12
+#: view/cronical/admin/scheduled-action-run/show.phtml:19
+msgid "Scheduled action"
+msgstr "Action planifiée"
+
+#: src/View/Helper/ScheduledActionRunSearchFilters.php:50
+msgid "Started after"
+msgstr "Démarré après"
+
+#: src/View/Helper/ScheduledActionRunSearchFilters.php:55
+msgid "Started before"
+msgstr "Démarré avant"
+
+#: src/View/Helper/ScheduledActionRunSearchFilters.php:60
+msgid "Ended after"
+msgstr "Terminé après"
+
+#: src/View/Helper/ScheduledActionRunSearchFilters.php:65
+msgid "Ended before"
+msgstr "Terminé avant"
+
+#: src/View/Helper/ScheduledActionSearchFilters.php:36
+msgid "Owner ID"
+msgstr "ID du propriétaire"
+
+#: src/View/Helper/ScheduledActionSearchFilters.php:42
+#: view/cronical/admin/scheduled-action/show-details.phtml:16
+#: view/cronical/admin/scheduled-action/show.phtml:26
+msgid "Action"
+msgstr "Action"
+
+#: src/View/Helper/ScheduledActionSearchFilters.php:53
+msgid "Is system"
+msgstr "Est système"
+
+#: src/View/Helper/ScheduledActionSearchFilters.php:58
+msgid "Latest run after"
+msgstr "Dernière exécution après"
+
+#: src/View/Helper/ScheduledActionSearchFilters.php:63
+msgid "Latest run before"
+msgstr "Dernière exécution avant"
+
+#: src/View/Helper/ScheduledActionSearchFilters.php:68
+msgid "Next run scheduled after"
+msgstr "Prochaine exécution planifiée après"
+
+#: src/View/Helper/ScheduledActionSearchFilters.php:73
+msgid "Next run scheduled before"
+msgstr "Prochaine exécution planifiée avant"
+
+#: view/cronical/admin/scheduled-action-run/browse.phtml:10
+#: view/cronical/admin/scheduled-action-run/show.phtml:8
+msgid "Scheduled action runs"
+msgstr "Exécutions d'action planifiée"
+
+#: view/cronical/admin/scheduled-action-run/browse.phtml:59
+#: view/cronical/admin/scheduled-action-run/show-details.phtml:33
+#: view/cronical/admin/scheduled-action-run/show.phtml:40
+msgid "Job"
+msgstr "Tâche"
+
+#: view/cronical/admin/scheduled-action-run/browse.phtml:135
+#: view/cronical/admin/scheduled-action-run/browse.phtml:154
+msgid "Delete scheduled action runs"
+msgstr "Supprimer les exécutions d'action planifiée"
+
+#: view/cronical/admin/scheduled-action-run/browse.phtml:136
+msgid ""
+"Are you sure you would like to delete the selected scheduled action runs?"
+msgstr ""
+"Confirmez-vous la suppression des exécutions d'action planifiée "
+"sélectionnées ?"
+
+#: view/cronical/admin/scheduled-action-run/browse.phtml:138
+#: view/cronical/admin/scheduled-action-run/browse.phtml:157
+#, php-format
+msgid ""
+"%1$s: this action will permanently delete %2$s scheduled action runs and "
+"cannot be undone."
+msgstr ""
+"%1$s: cette action supprimera définitivement %2$s exécutions d'action "
+"planifiée et ne peut pas être annulée."
+
+#: view/cronical/admin/scheduled-action-run/browse.phtml:155
+msgid ""
+"Are you sure you would like to delete all scheduled action runs on all pages "
+"of this result?"
+msgstr ""
+"Confirmez-vous la suppression de toutes les exécutions d'action planifiée "
+"sur toutes les pages de ce résultat ?"
+
+#: view/cronical/admin/scheduled-action-run/browse.phtml:194
+msgid "Omeka could not find any scheduled action runs."
+msgstr "Omeka n'a trouvé aucune exécution d'action planifiée."
+
+#: view/cronical/admin/scheduled-action-run/search.phtml:7
+#: view/cronical/admin/scheduled-action/add.phtml:10
+#: view/cronical/admin/scheduled-action/batch-edit.phtml:13
+#: view/cronical/admin/scheduled-action/browse.phtml:11
+#: view/cronical/admin/scheduled-action/edit.phtml:10
+#: view/cronical/admin/scheduled-action/search.phtml:7
+#: view/cronical/admin/scheduled-action/show.phtml:8
+msgid "Scheduled actions"
+msgstr "Actions planifiées"
+
+#: view/cronical/admin/scheduled-action/add.phtml:10
+msgid "New scheduled action"
+msgstr "Nouvelle action planifiée"
+
+#: view/cronical/admin/scheduled-action/batch-edit.phtml:13
+msgid "Batch edit scheduled actions"
+msgstr "Modifier par lot les actions planifiées"
+
+#: view/cronical/admin/scheduled-action/batch-edit.phtml:34
+msgid "Affected scheduled actions"
+msgstr "Actions planifiées concernées"
+
+#: view/cronical/admin/scheduled-action/batch-edit.phtml:37
+#, php-format
+msgid "You are editing the following %s scheduled actions:"
+msgstr "Vous êtes en train de modifier les %s actions planifiées suivantes:"
+
+#: view/cronical/admin/scheduled-action/batch-edit.phtml:44
+#, php-format
+msgid "You are editing %s scheduled actions."
+msgstr "Vous êtes en train de modifier %s actions planifiées."
+
+#: view/cronical/admin/scheduled-action/browse.phtml:23
+msgid "Add new scheduled action"
+msgstr "Ajouter une nouvelle action planifiée"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:72
+#: view/cronical/admin/scheduled-action/show-details.phtml:47
+#: view/cronical/admin/scheduled-action/show.phtml:59
+msgid "Latest run"
+msgstr "Dernière exécution"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:73
+msgid "Next run"
+msgstr "Prochaine exécution"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:96
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Action inconnue: %s"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:163
+msgid "Last time cronical was executed:"
+msgstr "Dernière fois que cronical a été exécuté:"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:170
+msgid "never"
+msgstr "jamais"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:191
+#: view/cronical/admin/scheduled-action/browse.phtml:210
+msgid "Delete scheduled actions"
+msgstr "Supprimer les actions planifiées"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:192
+msgid "Are you sure you would like to delete the selected scheduled actions?"
+msgstr "Confirmez-vous la suppression des actions planifiées sélectionnées ?"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:194
+#: view/cronical/admin/scheduled-action/browse.phtml:213
+#, php-format
+msgid ""
+"%1$s: this action will permanently delete %2$s scheduled actions and cannot "
+"be undone."
+msgstr ""
+"%1$s: cette action supprimera définitivement %2$s actions planifiées et ne "
+"peut pas être annulée."
+
+#: view/cronical/admin/scheduled-action/browse.phtml:211
+msgid ""
+"Are you sure you would like to delete all scheduled actions on all pages of "
+"this result?"
+msgstr ""
+"Confirmez-vous la suppression de toutes les actions planifiées sur toutes "
+"les pages de ce résultat ?"
+
+#: view/cronical/admin/scheduled-action/browse.phtml:250
+msgid "Omeka could not find any scheduled actions."
+msgstr "Omeka n'a trouvé aucune action planifiée."
+
+#: view/cronical/admin/scheduled-action/edit.phtml:27
+msgid "Schedule"
+msgstr "Planification"
+
+#: view/cronical/admin/scheduled-action/edit.phtml:39
+#: view/cronical/common/action/heartbeat/details.phtml:1
+#: view/cronical/common/action/heartbeat/show.phtml:1
+msgid "Action settings"
+msgstr "Paramètres de l'action"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:21
+#: view/cronical/admin/scheduled-action/show.phtml:33
+msgid "Action description"
+msgstr "Description de l'action"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:26
+#: view/cronical/admin/scheduled-action/show.phtml:38
+msgid "Cron expression"
+msgstr "Expression cron"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:36
+#: view/cronical/admin/scheduled-action/show.phtml:48
+#: view/cronical/common/advanced-search/scheduled-actions.phtml:59
+msgid "Is a system action"
+msgstr "Est une action système"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:41
+#: view/cronical/admin/scheduled-action/show.phtml:53
+msgid "Run history size"
+msgstr "Taille de l'historique d'exécutions"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:50
+#: view/cronical/admin/scheduled-action/show.phtml:62
+msgid "Started:"
+msgstr "Démarré :"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:54
+#: view/cronical/admin/scheduled-action/show.phtml:66
+msgid "Ended:"
+msgstr "Terminé :"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:58
+#: view/cronical/admin/scheduled-action/show.phtml:70
+msgid "Status:"
+msgstr "Statut :"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:63
+#: view/cronical/admin/scheduled-action/show.phtml:75
+msgid "Job:"
+msgstr "Tâche :"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:71
+#: view/cronical/admin/scheduled-action/show.phtml:83
+msgid "Runs"
+msgstr "Exécutions"
+
+#: view/cronical/admin/scheduled-action/show-details.phtml:74
+#: view/cronical/admin/scheduled-action/show.phtml:86
+msgid "view runs"
+msgstr "voir les exécutions"
+
+#: view/cronical/admin/scheduled-action/show.phtml:13
+msgid "Edit scheduled action"
+msgstr "Modifier l'action planifiée"
+
+#: view/cronical/common/action/heartbeat/details.phtml:4
+#: view/cronical/common/action/heartbeat/show.phtml:5
+msgid "Log level"
+msgstr "Niveau de journalisation"
+
+#: view/cronical/common/advanced-search/scheduled-action-runs.phtml:8
+#: view/cronical/common/advanced-search/scheduled-actions.phtml:8
+msgid "Search by action"
+msgstr "Chercher par action"
+
+#: view/cronical/common/advanced-search/scheduled-action-runs.phtml:25
+msgid "Search by status"
+msgstr "Chercher par statut"
+
+#: view/cronical/common/advanced-search/scheduled-actions.phtml:72
+msgid "Latest run started after"
+msgstr "Dernière exécution démarrée après"
+
+#: view/cronical/common/advanced-search/scheduled-actions.phtml:77
+msgid "Latest run started before"
+msgstr "Dernière exécution démarrée avant"
+
+#: config/module.config.php:84
+msgid "Scheduled actions runs"
+msgstr "Exécutions d'action planifiée"
+
+#: src/Form/ScheduledActionEditForm.php:41
+#: src/Form/ScheduledActionBatchUpdateForm.php:15
+msgid "Minute"
+msgstr "Minute"
+
+#: src/Form/ScheduledActionEditForm.php:42
+#: src/Form/ScheduledActionBatchUpdateForm.php:16
+msgid "The minute at which the action will be run (0-59)"
+msgstr "La minute à laquelle l'action sera exécutée (0-59)"
+
+#: src/Form/ScheduledActionEditForm.php:54
+#: src/Form/ScheduledActionBatchUpdateForm.php:27
+msgid "Hour"
+msgstr "Heure"
+
+#: src/Form/ScheduledActionEditForm.php:55
+#: src/Form/ScheduledActionBatchUpdateForm.php:28
+msgid "The hour at which the action will be run (0-23)"
+msgstr "L'heure à laquelle l'action sera exécutée (0-23)"
+
+#: src/Form/ScheduledActionEditForm.php:67
+#: src/Form/ScheduledActionBatchUpdateForm.php:39
+msgid "Day of month"
+msgstr "Jour du mois"
+
+#: src/Form/ScheduledActionEditForm.php:68
+#: src/Form/ScheduledActionBatchUpdateForm.php:40
+msgid ""
+"The day of month at which the action will be run. Can be any valid cron "
+"expression, for instance: \"1\", \"1-10\", \"*/5\", \"1,11,21\"."
+msgstr ""
+"Le jour du mois durant lequel l'action sera exécutée. Peut être n'importe "
+"quelle expression cron valide, par exemple: \"1\", \"1-10\", \"*/5\", "
+"\"1,11,21\"."
+
+#: src/Form/ScheduledActionEditForm.php:80
+#: src/Form/ScheduledActionBatchUpdateForm.php:51
+msgid "Month"
+msgstr "Mois"
+
+#: src/Form/ScheduledActionEditForm.php:81
+#: src/Form/ScheduledActionBatchUpdateForm.php:52
+msgid ""
+"The month at which the action will be run. Can be any valid cron expression, "
+"for instance: \"1\", \"2-6\", \"*/2\", \"3,6,9\"."
+msgstr ""
+"Le mois durant lequel l'action sera exécutée. Peut être n'importe quelle "
+"expression cron valide, par exemple: \"1\", \"2-6\", \"*/2\", \"3,6,9\"."
+
+#: src/Form/ScheduledActionEditForm.php:93
+#: src/Form/ScheduledActionBatchUpdateForm.php:63
+msgid "Day of week"
+msgstr "Jour de la semaine"
+
+#: src/Form/ScheduledActionEditForm.php:94
+#: src/Form/ScheduledActionBatchUpdateForm.php:64
+msgid ""
+"The day of week at which the action will be run. Can be any valid cron "
+"expression, for instance: \"0\", \"1-5\", \"*/2\", \"0,6\". 0 is Sunday."
+msgstr ""
+"Le jour de la semaine durant lequel l'action sera exécutée. Peut être "
+"n'importe quelle expression cron valide, par exemple: \"0\", \"1-5\", \"*/"
+"2\", \"0,6\". 0 correspond à dimanche."
+
+#: src/Form/ScheduledActionEditForm.php:118
+msgid "The number of runs to keep in history"
+msgstr "Le nombre d'exécutions à conserver dans l'historique"
+
+#: src/Controller/Admin/ScheduledActionController.php:93
+msgid "Scheduled action successfully created."
+msgstr "Action planifiée créée avec succès."
+
+#: src/Controller/Admin/ScheduledActionController.php:145
+msgid "Scheduled action successfully updated"
+msgstr "Action planifiée modifiée avec succès"
+
+#: src/Controller/Admin/ScheduledActionController.php:169
+msgid "scheduled action"
+msgstr "action planifiée"
+
+#: src/Controller/Admin/ScheduledActionController.php:183
+msgid "Scheduled action successfully deleted"
+msgstr "Action planifiée supprimée avec succès"
+
+#: src/Controller/Admin/ScheduledActionController.php:202
+msgid "You must select at least one scheduled action to batch delete."
+msgstr ""
+"Vous devez sélectionner au moins une action planifiée pour la suppression "
+"par lot."
+
+#: src/Controller/Admin/ScheduledActionController.php:212
+msgid "Scheduled actions successfully deleted"
+msgstr "Actions planifiées supprimées avec succès"
+
+#: src/Controller/Admin/ScheduledActionController.php:239
+msgid "Deleting scheduled actions. This may take a while."
+msgstr ""
+"Suppression des actions planifiées. Cela peut prendre un certain temps."
+
+#: src/Controller/Admin/ScheduledActionController.php:256
+msgid "You must select at least one scheduled action to batch edit."
+msgstr ""
+"Vous devez sélectionner au moins une action planifiée pour la modification "
+"par lot."
+
+#: src/Controller/Admin/ScheduledActionController.php:271
+msgid "Scheduled actions successfully edited"
+msgstr "Actions planifiées modifiées avec succès"
+
+#: src/Controller/Admin/ScheduledActionController.php:320
+msgid "Editing scheduled actions. This may take a while."
+msgstr ""
+"Modification des actions planifiées. Cela peut prendre un certain temps."
+
+#: src/Controller/Admin/ScheduledActionRunController.php:73
+msgid "scheduled action run"
+msgstr "exécution d'action planifiée"
+
+#: src/Controller/Admin/ScheduledActionRunController.php:87
+msgid "Scheduled action run successfully deleted"
+msgstr "Exécution d'action planifiée supprimée avec succès"
+
+#: src/Controller/Admin/ScheduledActionRunController.php:106
+msgid "You must select at least one scheduled action run to batch delete."
+msgstr ""
+"Vous devez sélectionner au moins une exécution d'action planifiée pour la "
+"suppression par lot."
+
+#: src/Controller/Admin/ScheduledActionRunController.php:116
+msgid "Scheduled action runs successfully deleted"
+msgstr "Exécution d'action planifiée supprimée avec succès"
+
+#: src/Controller/Admin/ScheduledActionRunController.php:143
+msgid "Deleting scheduled action runs. This may take a while."
+msgstr ""
+"Suppression des exécutions d'action planifiée. Cela peut prendre un certain "
+"temps."
+
+#: src/Api/Adapter/ScheduledActionAdapter.php:200
+msgid "The action cannot be empty."
+msgstr "L'action ne peut pas être vide."
+
+#: src/Api/Adapter/ScheduledActionRunAdapter.php:81
+msgid "Scheduled action id is missing"
+msgstr "L'ID de l'action planifiée est manquante"
+
+#: src/Action/IndexFulltextSearch.php:11
+msgid "Index full-text"
+msgstr "Indexation texte intégral"
+
+#: src/Action/IndexFulltextSearch.php:21
+msgid "Rebuild Omeka full-text search index"
+msgstr "Reconstruit l'index Omeka pour la recherche en texte intégral"
+
+#: src/Action/Unknown.php:19
+#, php-format
+msgid "[Unknown: %s]"
+msgstr "[Inconnu: %s]"
+
+#: src/Action/Heartbeat.php:19
+msgid "Debug"
+msgstr "Debug"
+
+#: src/Action/Heartbeat.php:21
+msgid "Notice"
+msgstr "Annonce"
+
+#: src/Action/Heartbeat.php:24
+msgid "Alert"
+msgstr "Alerte"
+
+#: src/Action/Heartbeat.php:25
+msgid "Emergency"
+msgstr "Urgence"
+
+#: src/Action/Heartbeat.php:30
+msgid "Heartbeat"
+msgstr "Battement de cœur"
+
+#: src/Action/Heartbeat.php:40
+msgid "Write a single line to logs to notify Cronical activity"
+msgstr ""
+"Écrit une seule ligne dans les journaux pour informer de l'activité de "
+"Cronical"

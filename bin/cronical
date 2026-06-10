@@ -1,0 +1,257 @@
+#!/usr/bin/env php
+<?php
+
+const DEFAULT_MAX_ACTIONS = 4;
+
+$opts = getopt('hv', ['help', 'verbose', 'max-actions:']);
+$help = isset($opts['h']) || isset($opts['help']);
+$verbose = isset($opts['v']) || isset($opts['verbose']);
+$max_actions = intval($opts['max-actions'] ?? DEFAULT_MAX_ACTIONS);
+
+if ($help) {
+    echo <<<'USAGE'
+    Usage: cronical [options...]
+           cronical --help
+
+    Options:
+        --max-actions <max-actions>
+            Allow no more than <max-actions> actions to run concurrently
+            Default: 4
+
+        -h, --help
+            Print this help and exit
+
+        -v, --verbose
+            Increase verbosity
+
+    USAGE;
+    exit;
+}
+
+if ($max_actions < 1) {
+    fprintf(STDERR, "Error: Invalid value for --max-actions: %s\n", $opts['max-actions']);
+    exit(1);
+}
+
+require dirname(__DIR__, 3) . '/bootstrap.php';
+$application = Omeka\Mvc\Application::init(require 'application/config/application.config.php');
+$services = $application->getServiceManager();
+
+$moduleManager = $services->get('Omeka\ModuleManager');
+$module = $moduleManager->getModule('Cronical');
+if (!$module || $module->getState() !== 'active') {
+    if ($verbose) {
+        fprintf(STDERR, "Cronical module is not active. Exiting.\n");
+    }
+    exit(1);
+}
+
+$children = 0;
+$exit_status = 0;
+
+$connection = $services->get('Omeka\Connection');
+
+$timezone_json = $connection->fetchOne('SELECT value FROM setting WHERE id = ?', ['time_zone']);
+$timezone = $timezone_json ? json_decode($timezone_json) : 'UTC';
+$timezone = new DateTimeZone($timezone);
+$now = new DateTime;
+$connection->executeStatement(
+    'INSERT setting (id, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = VALUES(value)',
+    ['cronical_latest_run', json_encode($now->format('Y-m-d H:i:s'))]
+);
+
+$scheduledActionRunIdByPid = [];
+
+$excluded_scheduled_action_ids = [];
+$scheduledActionAssoc = fetch_next_pending_action($connection, $now, $excluded_scheduled_action_ids);
+while ($scheduledActionAssoc) {
+    $scheduledActionId = $scheduledActionAssoc['id'];
+
+    if ($verbose) {
+        fprintf(STDERR, "Starting scheduled action #%d (%s)\n", $scheduledActionId, $scheduledActionAssoc['name']);
+    }
+
+    try {
+        $cronExpressionString = sprintf(
+            '%s %s %s %s %s',
+            $scheduledActionAssoc['minute'],
+            $scheduledActionAssoc['hour'],
+            $scheduledActionAssoc['day_of_month'],
+            $scheduledActionAssoc['month'],
+            $scheduledActionAssoc['day_of_week'],
+        );
+        $cronExpression = new Cronical\Stdlib\CronExpression($cronExpressionString, $timezone);
+    } catch (Exception $e) {
+        fprintf(STDERR, "Error: Invalid cron expression for scheduled action #%d: %s\n", $scheduledActionId, $cronExpressionString);
+        $excluded_scheduled_action_ids[] = $scheduledActionId;
+        $scheduledActionAssoc = fetch_next_pending_action($connection, $now, $excluded_scheduled_action_ids);
+        continue;
+    }
+
+    $connection->insert(
+        'cronical_scheduled_action_run',
+        [
+            'scheduled_action_id' => $scheduledActionId,
+            'owner_id' => $scheduledActionAssoc['owner_id'],
+            'status' => 'in_progress',
+            'started' => (new DateTime)->format('Y-m-d H:i:s'),
+            'settings' => $scheduledActionAssoc['settings'],
+        ]
+    );
+    $scheduledActionRunId = $connection->lastInsertId();
+
+    // Clean run history
+    prune_run_history($connection, $scheduledActionId);
+
+    $connection->update(
+        'cronical_scheduled_action',
+        [
+            'scheduled' => $cronExpression->getNextDate()->format('Y-m-d H:i:s')
+        ],
+        ['id' => $scheduledActionId]
+    );
+
+    $pid = pcntl_fork();
+    if ($pid === -1) {
+        die('could not fork');
+    } else if ($pid) {
+        $scheduledActionRunIdByPid[$pid] = $scheduledActionRunId;
+
+        if ($verbose) {
+            fprintf(STDERR, "Scheduled action #%d (%s), run #%d started in child %d\n", $scheduledActionId, $scheduledActionAssoc['name'], $scheduledActionRunId, $pid);
+        }
+
+        // Force reconnect
+        $connection->close();
+
+        $children++;
+        if ($children >= $max_actions) {
+            wait_for_any_child($connection, $verbose, $scheduledActionRunIdByPid, $exit_status);
+            $children--;
+        }
+    } else {
+        // Force reconnect
+        $connection->close();
+
+        // Authenticate as the action owner
+        $em = $services->get('Omeka\EntityManager');
+        $user = $em->find('Omeka\Entity\User', $scheduledActionAssoc['owner_id']);
+        if (!$user) {
+            fprintf("Error: User #%d does not exist\n", $scheduledActionAssoc['owner_id']);
+            exit(1);
+        }
+
+        $authentication = $services->get('Omeka\AuthenticationService');
+        $authentication->getStorage()->write($user);
+
+        // Run action
+        try {
+            $api = $services->get('Omeka\ApiManager');
+            $actionManager = $services->get('Cronical\ActionManager');
+            $scheduledActionRun = $api->read('cronical_scheduled_action_runs', $scheduledActionRunId)->getContent();
+            $actionName = $scheduledActionRun->scheduledAction()->action();
+            $action = $actionManager->get($actionName);
+            $action->perform($scheduledActionRun);
+        } catch (Throwable $e) {
+            $logger = $services->get('Omeka\Logger');
+            $logger->err(sprintf('Cronical: Action %s (run %d) throwed: %s', $actionName, $scheduledActionRunId, (string) $e));
+            fprintf(STDERR, "Error: Action %s (run %d) throwed: %s\n", $actionName, $scheduledActionRunId, (string) $e);
+            exit(1);
+        }
+
+        // Terminate child process
+        exit;
+    }
+
+    $scheduledActionAssoc = fetch_next_pending_action($connection, $now, $excluded_scheduled_action_ids);
+}
+
+// Wait for remaining children
+while ($children > 0) {
+    wait_for_any_child($connection, $verbose, $scheduledActionRunIdByPid, $exit_status);
+    $children--;
+}
+
+exit($exit_status);
+
+function fetch_next_pending_action(Doctrine\DBAL\Connection $connection, DateTime $now, array $excluded_ids = []): array|false
+{
+    $sql = 'SELECT * FROM cronical_scheduled_action WHERE scheduled < ? AND is_active = 1';
+    $params = [$now->format('Y-m-d H:i:s')];
+    $types = [Doctrine\DBAL\ParameterType::STRING];
+
+    if ($excluded_ids) {
+        $sql .= ' AND id NOT IN (?)';
+        $params[] = $excluded_ids;
+        $types[] = Doctrine\DBAL\Connection::PARAM_INT_ARRAY;
+    }
+
+    return $connection->fetchAssociative($sql, $params, $types);
+}
+
+// Wait for a child to exit and check if it exited normally.
+// If not, log the error and update the scheduled action run status.
+function wait_for_any_child(Doctrine\DBAL\Connection $connection, bool $verbose, array &$run_id_by_pid, int &$exit_status): void
+{
+    $error = false;
+
+    $pid = pcntl_wait($status);
+
+    $run_id = $run_id_by_pid[$pid] ?? 0;
+    unset($run_id_by_pid[$pid]);
+
+    if (!pcntl_wifexited($status)) {
+        if (pcntl_wifsignaled($status)) {
+            $signal = pcntl_wtermsig($status);
+            fprintf(STDERR, "Error: PID %d (scheduled action run #%d) was terminated by a signal (%d)\n", $pid, $run_id, $signal);
+        } else {
+            fprintf(STDERR, "Error: PID %d (scheduled action run #%d) exited abnormally\n", $pid, $run_id);
+        }
+        $error = true;
+    } elseif (0 !== ($child_exit_status = pcntl_wexitstatus($status))) {
+        fprintf(STDERR, "Error: PID %d (scheduled action run #%d) exited with status %d\n", $pid, $run_id, $child_exit_status);
+        $error = true;
+    } else {
+        if ($verbose) {
+            fprintf(STDERR, "PID %d (scheduled action run #%d) exited normally\n", $pid, $run_id);
+        }
+    }
+
+    $run_status = 'completed';
+    if ($error) {
+        $exit_status = 1;
+        $run_status = 'error';
+    }
+
+    $ended = (new DateTime)->format('Y-m-d H:i:s');
+    $connection->update('cronical_scheduled_action_run', ['ended' => $ended, 'status' => $run_status], ['id' => $run_id]);
+}
+
+function prune_run_history(Doctrine\DBAL\Connection $connection, int $scheduled_action_id): void
+{
+    $run_history_size = $connection->fetchOne(
+        'SELECT run_history_size FROM cronical_scheduled_action WHERE id = ?',
+        [$scheduled_action_id]
+    );
+
+    if ($run_history_size < 1) {
+        $run_history_size = 1;
+    }
+
+    $connection->executeStatement(
+        <<<'SQL'
+            DELETE FROM cronical_scheduled_action_run
+            WHERE scheduled_action_id = ?
+            AND id NOT IN (
+                SELECT id FROM (
+                    SELECT id FROM cronical_scheduled_action_run
+                    WHERE scheduled_action_id = ?
+                    ORDER BY id DESC
+                    LIMIT ?
+                ) subquery
+            )
+        SQL,
+        [ $scheduled_action_id, $scheduled_action_id, $run_history_size ],
+        [ Doctrine\DBAL\ParameterType::INTEGER, Doctrine\DBAL\ParameterType::INTEGER, Doctrine\DBAL\ParameterType::INTEGER ]
+    );
+}

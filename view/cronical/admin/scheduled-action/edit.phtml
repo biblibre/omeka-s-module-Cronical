@@ -1,0 +1,47 @@
+<?php
+/**
+ * @var Laminas\Form\Form $form
+ * @var Cronical\Api\Representation\ScheduledActionRepresentation $scheduledAction
+ */
+$this->htmlElement('body')->appendAttribute('class', 'edit cronical cronical-scheduled-actions');
+$form->prepare();
+?>
+
+<?= $this->pageTitle($scheduledAction->actionLabel(), 1, $this->translate('Scheduled actions'), $this->translate('Edit')); ?>
+
+<?php $this->trigger('view.edit.before'); ?>
+<?php echo $this->form()->openTag($form); ?>
+<?php $this->trigger('view.edit.form.before', ['form' => $form]); ?>
+
+<div id="page-actions">
+    <button><?= $this->escapeHtml($this->translate('Save')) ?></button>
+</div>
+
+<?= $this->formRow($form->get('csrf')) ?>
+<?= $this->formRow($form->get('o:action')) ?>
+<?= $this->formRow($form->get('o:name')) ?>
+<?= $this->formRow($form->get('o:is_active')) ?>
+<?= $this->formRow($form->get('o:run_history_size')) ?>
+
+<fieldset>
+    <legend><?= $this->translate('Schedule'); ?></legend>
+
+    <?= $this->formRow($form->get('o:day_of_week')) ?>
+    <?= $this->formRow($form->get('o:month')) ?>
+    <?= $this->formRow($form->get('o:day_of_month')) ?>
+    <?= $this->formRow($form->get('o:hour')) ?>
+    <?= $this->formRow($form->get('o:minute')) ?>
+</fieldset>
+
+<?php $settingsFieldset = $form->get('o:settings'); ?>
+<?php if ($settingsFieldset->count() > 0): ?>
+    <fieldset>
+        <legend><?= $this->translate('Action settings'); ?></legend>
+
+        <?= $this->formCollection($settingsFieldset, false) ?>
+    </fieldset>
+<?php endif; ?>
+
+<?php $this->trigger('view.edit.form.after', array('form' => $form)); ?>
+<?php echo $this->form()->closeTag(); ?>
+<?php $this->trigger('view.edit.after'); ?>

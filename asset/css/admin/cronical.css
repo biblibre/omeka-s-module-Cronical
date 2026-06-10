@@ -1,0 +1,9 @@
+header nav .cronical::before,
+.cronical .subhead::before {
+    content: '\f017';
+}
+
+.cronical.browse td:first-child,
+.cronical.browse th:first-child {
+    width: 30%
+}

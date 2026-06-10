@@ -1,0 +1,134 @@
+#!/usr/bin/env php
+<?php
+
+$opts = getopt('hv', ['help', 'verbose', 'owner-id:', 'cron-expression:', 'system', 'action:', 'name:', 'settings:']);
+$help = isset($opts['h']) || isset($opts['help']);
+$verbose = isset($opts['v']) || isset($opts['verbose']);
+$system = isset($opts['system']);
+$owner_id = intval($opts['owner-id'] ?? 0);
+$cron_expression = $opts['cron-expression'] ?? '';
+$action = $opts['action'] ?? '';
+$name = $opts['name'] ?? null;
+$action_settings_json = $opts['settings'] ?? null;
+
+if ($help) {
+    echo <<<'USAGE'
+    Usage: schedule-add [options...]
+           schedule-add --help
+
+    Options:
+        --cron-expression <cron-expression>
+            Action schedule as a cron expression ("m h dom mon dow")
+            Required
+
+        --owner-id <user-id>
+            ID of the action owner
+            Required
+
+        --action <action>
+            Name of the action to schedule. Often a PHP class name
+            Required
+
+        --name <name>
+            Descriptive name of the scheduled action
+
+        --settings <settings-in-json>
+            Action settings in JSON format
+
+        --system
+            Create system action instead of a normal one.
+            System actions cannot be modified or deleted from the admin interface.
+
+        -h, --help
+            Print this help and exit
+
+        -v, --verbose
+            Increase verbosity
+
+    USAGE;
+    exit;
+}
+
+if (!$owner_id) {
+    fprintf(STDERR, "Error: Missing required --owner-id\n");
+    exit(1);
+}
+
+if (!$action) {
+    fprintf(STDERR, "Error: Missing required --action\n");
+    exit(1);
+}
+
+if (!$cron_expression) {
+    fprintf(STDERR, "Error: Missing required --cron-expression\n");
+    exit(1);
+}
+
+$action_settings = [];
+if ($action_settings_json !== null) {
+    $action_settings = json_decode($action_settings_json, true);
+    if ($action_settings === null) {
+        fprintf(STDERR, "Error: Failed to decode JSON: %s\n", $action_settings_json);
+    }
+}
+
+require dirname(__DIR__, 3) . '/bootstrap.php';
+$application = Omeka\Mvc\Application::init(require 'application/config/application.config.php');
+$services = $application->getServiceManager();
+
+$moduleManager = $services->get('Omeka\ModuleManager');
+$module = $moduleManager->getModule('Cronical');
+if (!$module || $module->getState() !== 'active') {
+    fprintf(STDERR, "Error: Cronical module is not active\n");
+    exit(1);
+}
+
+// Authenticate as the action owner
+$em = $services->get('Omeka\EntityManager');
+$owner = $em->find('Omeka\Entity\User', $owner_id);
+if (!$owner) {
+    fprintf(STDERR, "Error: User $owner_id does not exist\n");
+    exit(1);
+}
+
+$authentication = $services->get('Omeka\AuthenticationService');
+$authentication->getStorage()->write($owner);
+
+// Temporarily allow authenticated user to schedule anything
+$acl = $services->get('Omeka\Acl');
+$acl->removeDeny($owner, 'Cronical\Entity\ScheduledAction', 'schedule-anything');
+
+$api = $services->get('Omeka\ApiManager');
+$settings = $services->get('Omeka\Settings');
+$actionManager = $services->get('Cronical\ActionManager');
+
+$actionObj = $actionManager->get($action);
+if ($actionObj instanceof Cronical\Action\Unknown) {
+    fprintf(STDERR, "Error: Unknown action: %s\n", $action);
+    exit(1);
+}
+
+$timezone = new DateTimeZone($settings->get('time_zone', 'UTC'));
+try {
+    $cronExpression = new Cronical\Stdlib\CronExpression($cron_expression, $timezone);
+} catch (Exception $e) {
+    fprintf(STDERR, "Error: %s\n", $e->getMessage());
+    exit(1);
+}
+
+$scheduledActionData = [
+    'o:action' => $action,
+    'o:name' => $name ?? sprintf('%s: %s', $actionObj->getGroupLabel(), $actionObj->getLabel()),
+    'o:minute' => $cronExpression->minute,
+    'o:hour' => $cronExpression->hour,
+    'o:day_of_month' => $cronExpression->dayOfMonth,
+    'o:month' => $cronExpression->month,
+    'o:day_of_week' => $cronExpression->dayOfWeek,
+    'o:is_system' => $system,
+    'o:is_active' => true,
+    'o:settings' => $action_settings,
+];
+$response = $api->create('cronical_scheduled_actions', $scheduledActionData);
+$scheduledAction = $response->getContent();
+
+fprintf(STDOUT, "Scheduled action #%d created\n", $scheduledAction->id());

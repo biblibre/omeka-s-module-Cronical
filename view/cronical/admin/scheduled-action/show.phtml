@@ -1,0 +1,93 @@
+<?php
+/**
+ * @var Cronical\Api\Representation\ScheduledActionRepresentation $scheduledAction
+ */
+$this->htmlElement('body')->appendAttribute('class', 'show cronical cronical-scheduled-actions');
+?>
+
+<?= $this->pageTitle($scheduledAction->name(), 1, $this->translate('Scheduled actions')) ?>
+
+<div id="page-actions">
+    <?php $this->trigger('view.show.page_actions', ['resource' => $scheduledAction]); ?>
+    <?php if ($scheduledAction->userIsAllowed('update') && !$scheduledAction->isSystem()): ?>
+        <a class="button" href="<?= $this->escapeHtml($scheduledAction->url('edit')) ?>"><?= $this->escapeHtml($this->translate('Edit scheduled action')) ?></a>
+    <?php endif; ?>
+</div>
+
+<?php $this->trigger('view.show.before'); ?>
+
+<dl>
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('ID')) ?></dt>
+        <dd class="value"><?= $this->escapeHtml($scheduledAction->id()) ?></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Action')) ?></dt>
+        <dd class="value">
+            <?= $this->escapeHtml(sprintf('%s: %s', $this->translate($scheduledAction->actionGroupLabel()), $this->translate($scheduledAction->actionLabel()))) ?>
+        </dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Action description')) ?></dt>
+        <dd class="value"><?= $this->escapeHtml($this->translate($scheduledAction->actionDescription())) ?></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Cron expression')) ?></dt>
+        <dd class="value"><code><?= $this->escapeHtml($scheduledAction->cronExpression()) ?></code></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Is active')) ?></dt>
+        <dd class="value"><?= $this->escapeHtml($scheduledAction->isActive() ? $this->translate('Yes') : $this->translate('No')) ?></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Is a system action')) ?></dt>
+        <dd class="value"><?= $this->escapeHtml($scheduledAction->isSystem() ? $this->translate('Yes') : $this->translate('No')) ?></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Run history size')) ?></dt>
+        <dd class="value"><?= $this->escapeHtml($scheduledAction->runHistorySize()) ?></dd>
+    </div>
+
+    <?php if ($latestRun = $scheduledAction->latestRun()): ?>
+        <div class="property">
+            <dt><?= $this->escapeHtml($this->translate('Latest run')) ?></dt>
+
+            <dd class="value">
+                <strong><?= $this->escapeHtml($this->translate('Started:')) ?></strong> <?= $this->i18n()->dateFormat($latestRun->started(), 'full', 'short') ?>
+            </dd>
+
+            <dd class="value">
+                <strong><?= $this->escapeHtml($this->translate('Ended:')) ?></strong> <?= $this->i18n()->dateFormat($latestRun->ended(), 'full', 'short') ?>
+            </dd>
+
+            <dd class="value">
+                <strong><?= $this->escapeHtml($this->translate('Status:')) ?></strong> <?= $this->escapeHtml($this->translate($latestRun->statusLabel())) ?>
+            </dd>
+
+            <?php if ($job = $latestRun->job()): ?>
+                <dd class="value">
+                    <strong><?= $this->escapeHtml($this->translate('Job:')) ?></strong>
+                    <?= $job->link(sprintf('#%d (%s)', $job->id(), $this->translate($job->statusLabel()))) ?>
+                </dd>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Runs')) ?></dt>
+        <dd class="value">
+            <?= $this->hyperlink(
+                $this->translate('view runs'),
+                $this->url('admin/cronical/default', ['controller' => 'scheduled-action-run'], ['query' => ['scheduled_action_id' => $scheduledAction->id()]])
+            ) ?>
+        </dd>
+    </div>
+</dl>
+
+<?php $this->trigger('view.show.after'); ?>

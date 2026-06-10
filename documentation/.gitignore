@@ -1,0 +1,4 @@
+/.venv
+/_build
+/locales/**/*.mo
+/screenshots-maker/node_modules/

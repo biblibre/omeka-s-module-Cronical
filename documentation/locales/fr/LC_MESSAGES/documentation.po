@@ -1,0 +1,619 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, BibLibre
+# This file is distributed under the same license as the Cronical package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Cronical\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-26 08:01+0200\n"
+"PO-Revision-Date: 2026-06-26 09:03+0200\n"
+"Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
+"Language-Team: fr <LL@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+"X-Generator: Poedit 3.6\n"
+
+#: ../../builtin-actions.rst:2
+msgid "Built-in actions"
+msgstr "Actions intégrées"
+
+#: ../../builtin-actions.rst:4
+msgid ""
+"Cronical provides a few actions, mostly to serve as examples for developers."
+msgstr ""
+"Cronical fournit quelques actions, principalement pour servir d'exemples aux "
+"développeurs."
+
+#: ../../builtin-actions.rst:7
+msgid "Heartbeat"
+msgstr "Battement de cœur"
+
+#: ../../builtin-actions.rst:9
+msgid ""
+"This is the simplest one: it writes a message to logs. It illustrates how an "
+"action can use the Omeka logger and how to declare action-specific parameters."
+msgstr ""
+"C'est la plus simple: elle écrit un message dans les journaux. Elle illustre "
+"comment une action peut utiliser le *logger* Omeka et comment déclarer des "
+"paramètres spécifiques à l'action."
+
+#: ../../builtin-actions.rst:12
+msgid "It can be useful to verify that Cronical is indeed working correctly."
+msgstr "Elle peut être utile pour vérifier que Cronical fonctionne correctement."
+
+#: ../../builtin-actions.rst:15
+msgid "Parameters"
+msgstr "Paramètres"
+
+#: ../../builtin-actions.rst:17
+msgid "Log level"
+msgstr "Niveau de journalisation"
+
+#: ../../builtin-actions.rst:18
+msgid ""
+"What log level will be used. One of: debug, notice, info, warn, error, alert, "
+"emergency."
+msgstr ""
+"Quel niveau de journalisation sera utilisé. Un parmi: debug, annonce, info, "
+"avertissement, erreur, alerte, urgence."
+
+#: ../../builtin-actions.rst:22
+msgid "Index full-text"
+msgstr "Indexation texte intégral"
+
+#: ../../builtin-actions.rst:24
+msgid ""
+"This action starts the rebuilding of Omeka full-text search index in a "
+"background job and exit immediately. The real work is done in the background "
+"job, which can be seen in the administration interface."
+msgstr ""
+"Cette action démarre la reconstruction de l'index de recherche en texte "
+"intégrale d'Omeka dans une tâche de fond et se termine immédiatement. Le "
+"travail réel est fait dans la tâche de fond, qui peut être vue dans l'interface "
+"d'administration."
+
+#: ../../builtin-actions.rst:28
+msgid "This action has no parameters."
+msgstr "Cette action n'a pas de paramètres."
+
+#: ../../developer/write-new-action.rst:2
+msgid "Write a new action"
+msgstr "Écrire une nouvelle action"
+
+#: ../../developer/write-new-action.rst:4
+msgid ""
+"If you are a module developer and you want to provide schedulable actions for "
+"your module, follow this guide."
+msgstr ""
+"Si vous développez un module et que vous voulez fournir des actions "
+"planifiables pour votre module, suivez ce guide."
+
+#: ../../developer/write-new-action.rst:8
+msgid "Module config"
+msgstr "Configuration du module"
+
+#: ../../developer/write-new-action.rst:10
+msgid "In ``config/module.config.php``, add the following section::"
+msgstr "Dans ``config/module.config.php``, ajoutez la section suivante::"
+
+#: ../../developer/write-new-action.rst:21
+msgid "The action class"
+msgstr "La classe d'action"
+
+#: ../../developer/write-new-action.rst:23
+msgid ""
+"If the action's only task is to start a background job, create ``src/Action/"
+"MyAction.php`` like this:"
+msgstr ""
+"Si l'unique fonction de l'action est de démarrer une tâche de fond, créez ``src/"
+"Action/MyAction.php`` comme ceci:"
+
+#: ../../developer/write-new-action.rst:64
+msgid "Otherwise, create ``src/Action/MyAction.php`` like this:"
+msgstr "Autrement, créez ``src/Action/MyAction.php`` comme cela:"
+
+#: ../../developer/write-new-action.rst:97
+msgid ""
+"If the action needs additional parameters you should also implement the "
+"following methods:"
+msgstr ""
+"Si l'action nécessite des paramètres additionnels vous devez implémenter les "
+"méthodes suivantes:"
+
+#: ../../developer/write-new-action.rst:144
+msgid ""
+"Additionally, if the class implements ``Laminas\\Log\\LoggerAwareInterface``, "
+"the logger is automatically injected."
+msgstr ""
+"De plus, si la classe implémente ``Laminas\\Log\\LoggerAwareInterface``, le "
+"*logger* sera automatiquement injecté."
+
+#: ../../first-time-setup.rst:2
+msgid "First time setup"
+msgstr "Mise en place initiale"
+
+#: ../../first-time-setup.rst:4
+msgid ""
+"Once the module is installed, you need to configure the system to execute the "
+"``cronical`` script periodically. This script will check if actions need to be "
+"executed and execute them."
+msgstr ""
+"Une fois le module installé, vous devez configurer le système pour qu'il "
+"exécute le script ``cronical`` périodiquement. Ce script vérifiera si des "
+"actions ont besoin d'être exécutés et les exécutera."
+
+#: ../../first-time-setup.rst:8
+msgid "There are different ways to do that. We will explain the most common ones."
+msgstr ""
+"Il y a plusieurs façons de faire ça. Nous allons expliquer les plus communes."
+
+#: ../../first-time-setup.rst:10
+msgid ""
+"Note that in the following examples we configure the system to run the "
+"``cronical`` script every minute. It is not required to do so.  For instance "
+"you can run it every hour and it will execute all actions that should have been "
+"executed in the past hour. So adjust according to your needs."
+msgstr ""
+"Notez que dans les exemples qui suivent nous configurons le système pour lancer "
+"le script ``cronical`` chaque minute. Ce n'est pas obligatoire.  Par exemple "
+"vous pouvez le lancer une fois par heure et il exécutera toutes les actions qui "
+"auraient dû être exécutées durant l'heure précédente. Donc ajustez selon vos "
+"besoins."
+
+#: ../../first-time-setup.rst:16
+msgid "cron"
+msgstr "cron"
+
+#: ../../first-time-setup.rst:18
+msgid "Create ``/etc/cron.d/cronical`` with the following contents::"
+msgstr "Créez ``/etc/cron.d/cronical`` avec le contenu suivant::"
+
+#: ../../first-time-setup.rst:22 ../../first-time-setup.rst:56
+msgid ""
+"Replace ``<user>`` with the name of the user that runs Omeka S (``www-data`` "
+"for instance), and replace ``<path-to-omeka-s>`` with the absolute path to "
+"Omeka S."
+msgstr ""
+"Remplacez ``<user>`` par le nom de l'utilisateur qui exécute Omeka S (``www-"
+"data`` par exemple), et remplacez ``<path-to-omeka-s>`` par le chemin absolu "
+"d'Omeka S."
+
+#: ../../first-time-setup.rst:26
+msgid ""
+"If you do not have root access, but you are able to log in as the same user "
+"that is running Omeka S, you can instead run ``crontab -e`` and add the "
+"following line::"
+msgstr ""
+"Si vous n'avez pas d'accès root, mais que vous pouvez vous connecter avec le "
+"même utilisateur que celui qui exécute Omeka S, vous pouvez exécuter ``crontab "
+"-e`` et ajouter la ligne suivante::"
+
+#: ../../first-time-setup.rst:33
+msgid "systemd"
+msgstr "systemd"
+
+#: ../../first-time-setup.rst:35
+msgid ""
+"Create ``/etc/systemd/system/cronical.timer`` with the following contents::"
+msgstr "Créez ``/etc/systemd/system/cronical.timer`` avec le contenu suivant::"
+
+#: ../../first-time-setup.rst:46
+msgid ""
+"and create ``/etc/systemd/system/cronical.service`` with the following "
+"contents::"
+msgstr ""
+"et créez ``/etc/systemd/system/cronical.service`` avec le contenu suivant::"
+
+#: ../../first-time-setup.rst:60
+msgid "Then execute the following command::"
+msgstr "Puis exécutez la commande suivante::"
+
+#: ../../index.rst:48
+msgid "User manual"
+msgstr "Manuel utilisateur"
+
+#: ../../index.rst:56
+msgid "Developer documentation"
+msgstr "Documentation développeur"
+
+#: ../../index.rst:2
+msgid "Introduction"
+msgstr "Introduction"
+
+#: ../../index.rst:4
+msgid "Cronical is an action scheduler for Omeka."
+msgstr "Cronical est un planificateur d'action pour Omeka."
+
+#: ../../index.rst:6
+msgid ""
+"It allows to executed various actions based on the date and time. Actions can "
+"be executed daily, weekly, monthly, yearly, or anything in between (for "
+"instance, \"every 1st and 15th of each month\"). Each action has its own "
+"schedule."
+msgstr ""
+"Il permet d'exécuter des actions diverses selon la date et l'heure. Les actions "
+"peuvent être exécutées chaque jour, chaque semaine, chaque mois, chaque année, "
+"ou n'importe quelle autre fréquence (par exemple, \"tous les 1ers et 15 de "
+"chaque mois\"). Chaque action a sa propre fréquence."
+
+#: ../../index.rst:11
+msgid "Actions themselves are mostly provided by other modules."
+msgstr ""
+"Les actions elles-mêmes sont principalement fournies par d'autres modules."
+
+#: ../../index.rst:14
+msgid "Requirements"
+msgstr "Pré-requis"
+
+#: ../../index.rst:16
+msgid "Omeka S >= 4.1.0"
+msgstr "Omeka S >= 4.1.0"
+
+#: ../../index.rst:17
+msgid ""
+"Access to the server crontab (or equivalent) to set up a script to be run "
+"periodically"
+msgstr ""
+"Accès à la *crontab* du serveur (ou équivalent) pour mettre en place un script "
+"à exécuter périodiquement."
+
+#: ../../index.rst:21
+msgid "Features"
+msgstr "Fonctionnalités"
+
+#: ../../index.rst:23
+msgid ""
+"Execute actions automatically based on date (day of month, month, day of week) "
+"and time (hour, minute)"
+msgstr ""
+"Exécute des actions automatiquement selon la date (jour du mois, mois, jour de "
+"la semaine) et l'heure (heure, minute)"
+
+#: ../../index.rst:25
+msgid ""
+"Any valid cron expression is allowed for day of month, month, and day of week."
+msgstr ""
+"Toutes les expressions cron valides sont autorisées pour le jour du mois, le "
+"mois et le jour de la semaine."
+
+#: ../../index.rst:26
+msgid ""
+"Hour and minute are limited so that each action cannot be run more than once "
+"per day, but system administrators can bypass that limitation to schedule "
+"actions to be executed up to once per minute."
+msgstr ""
+"L'heure et la minute sont limitées de sorte que chaque action ne puisse pas "
+"être exécutée plus d'une fois par jour, mais les administrateurs systèmes "
+"peuvent outrepasser cette limitation pour planifier des actions à exécuter "
+"jusqu'à une fois par minute."
+
+#: ../../index.rst:29
+msgid "Omeka S modules can provide their own actions"
+msgstr "Les modules Omeka S peuvent founir leurs propres actions"
+
+#: ../../index.rst:30
+msgid ""
+"An action can start a background job if the task is expected to be long, but "
+"it's optional."
+msgstr ""
+"Une action peut démarrer une tâche de fond si l'opération est longue, mais "
+"c'est facultatif."
+
+#: ../../index.rst:34
+msgid "Comparison with similar modules"
+msgstr "Comparaison avec des modules similaires"
+
+#: ../../index.rst:37
+msgid "Cron"
+msgstr "Cron"
+
+#: ../../index.rst:39
+msgid ""
+"`Cron <https://omeka.org/s/modules/Cron/>`__ is a module for Omeka S that "
+"provides a scheduled action system allowing modules to register and execute "
+"recurring actions."
+msgstr ""
+"`Cron <https://omeka.org/s/modules/Cron/>`__ est un module pour Omeka S qui "
+"fournit un système d'action planifiée permettant aux modules de déclarer et "
+"exécuter des actions récurrentes."
+
+#: ../../index.rst:43
+msgid ""
+"With Cron, every scheduled action is executed with the same schedule. With "
+"Cronical, each action has its own schedule."
+msgstr ""
+"Avec Cron, toutes les actions planifiées sont exécutées à la même fréquence. "
+"Avec Cronical, chaque action a sa propre fréquence."
+
+#: ../../index.rst:45
+msgid ""
+"Cronical has more options regarding schedule. You can configure the time, the "
+"day of the month, the month and the day of the week."
+msgstr ""
+"Cronical a plus d'options concernant la planification. Vous pouvez configurer "
+"l'heure, le jour du mois, le mois et le jour de la semaine."
+
+#: ../../scheduled-actions.rst:2
+msgid "Scheduled actions"
+msgstr "Actions planifiées"
+
+#: ../../scheduled-actions.rst:4
+msgid ""
+"To manage scheduled actions, go to Omeka S administration interface and click "
+"on \"Scheduled actions\" in the navigation menu."
+msgstr ""
+"Pour gérer les actions planifiées, allez dans l'interface d'administration "
+"d'Omeka S et cliquez sur \"Actions planifiées\" dans le menu de navigation."
+
+#: ../../scheduled-actions.rst:9
+msgid "Click on \"Add new scheduled action\""
+msgstr "Cliquez sur \"Ajouter une nouvelle action planifiée\""
+
+#: ../../scheduled-actions.rst:13
+msgid "Choose an action then click on the \"Add\" button."
+msgstr "Choisissez une action et cliquez sur le bouton \"Ajouter\"."
+
+#: ../../scheduled-actions.rst:15
+msgid ""
+"Cronical provides a few :doc:`built-in actions <builtin-actions>`. Other "
+"enabled modules can provide more actions."
+msgstr ""
+"Cronical fournit quelques :doc:`actions intégrées <builtin-actions>`. D'autres "
+"modules activés peuvent fournir plus d'actions."
+
+#: ../../scheduled-actions.rst:20
+msgid "Scheduled actions have the following parameters:"
+msgstr "Les actions planifiées ont les paramètres suivants:"
+
+#: ../../scheduled-actions.rst:22
+msgid "Name"
+msgstr "Nom"
+
+#: ../../scheduled-actions.rst:23
+msgid ""
+"A descriptive name of this particular scheduled action (the same action can be "
+"scheduled more than once)."
+msgstr ""
+"Un nom descriptif pour cette action planifiée particulière (une même action "
+"peut être planifiée plusieurs fois)."
+
+#: ../../scheduled-actions.rst:26
+msgid "Active"
+msgstr "Active"
+
+#: ../../scheduled-actions.rst:27
+msgid ""
+"Only active scheduled actions are run, so you can use this parameter to "
+"temporarily disable a scheduled action."
+msgstr ""
+"Seules les actions planifiées actives sont exécutées, vous pouvez donc utiliser "
+"ce paramètre pour désactiver temporairement une action planifiée."
+
+#: ../../scheduled-actions.rst:30
+msgid "Run history size"
+msgstr "Taille de l'historique d'exécutions"
+
+#: ../../scheduled-actions.rst:31
+msgid ""
+"Every time a scheduled action is run, Cronical keep some information about this "
+"execution (or \"run\"), like the time it started or its status."
+msgstr ""
+"Chaque fois qu'une action planifiée est exécutée, Cronical garde quelques "
+"informations sur son exécution, comme son heure de début ou son statut."
+
+#: ../../scheduled-actions.rst:34
+msgid ""
+"To avoid an evergrowing database table of old runs, Cronical only keep the most "
+"recent runs and delete the others. This parameter allows you to configure how "
+"many runs you want to keep for that scheduled action."
+msgstr ""
+"Pour éviter d'avoir une table de base de données en constant expansion, "
+"Cronical garde uniquement les exécutions les plus récentes et supprime les "
+"autres. Ce paramètre permet de configurer combien d'exécutions vous voulez "
+"garder pour cette action planifiée."
+
+#: ../../scheduled-actions.rst:38
+msgid ""
+"The next section allows to configure when the action will be run. It should be "
+"familiar to those that are used to configure ``cron`` but there are some "
+"differences."
+msgstr ""
+"La section suivante permet de configurer quand l'action sera exécutée. Elle "
+"devrait être familière à ceux qui sont habitués à ``cron`` mais il y a quelques "
+"différences."
+
+#: ../../scheduled-actions.rst:41
+msgid "Day of week"
+msgstr "Jour de la semaine"
+
+#: ../../scheduled-actions.rst:42
+msgid ""
+"The day of week during which the action will be run. Can be any valid cron "
+"expression, for instance:"
+msgstr ""
+"La jour de la semaine durant lequel l'action sera exécuté. Peut être n'importe "
+"quelle expression cron valide, par exemple:"
+
+#: ../../scheduled-actions.rst:45
+msgid "``0`` means Sunday"
+msgstr "``0`` signifie dimanche"
+
+#: ../../scheduled-actions.rst:46
+msgid "``1-5`` means from Monday to Friday"
+msgstr "``1-5`` signifie de lundi à vendredi"
+
+#: ../../scheduled-actions.rst:47
+msgid "``*/2`` means Sunday, Tuesday, Thursday and Saturday"
+msgstr "``*/2`` signifie dimanche, mardi, jeudi et samedi"
+
+#: ../../scheduled-actions.rst:48
+msgid "``0,6`` means Sunday and Saturday"
+msgstr "``0,6`` signifie dimanche et samedi"
+
+#: ../../scheduled-actions.rst:50
+msgid "Month"
+msgstr "Mois"
+
+#: ../../scheduled-actions.rst:51
+msgid ""
+"The month during which the action will be run. Can be any valid cron "
+"expression, for instance:"
+msgstr ""
+"Le mois durant lequel l'action sera exécutée. Peut être n'importe quelle "
+"expression cron valide, par exemple:"
+
+#: ../../scheduled-actions.rst:54
+msgid "``1`` means January"
+msgstr "``1`` signifie janvier"
+
+#: ../../scheduled-actions.rst:55
+msgid "``2-6`` means from February to June"
+msgstr "``2-6`` signifie de février à juin"
+
+#: ../../scheduled-actions.rst:56
+msgid "``*/2`` means January, March, May, July, September and November"
+msgstr "``*/2`` signifie janvier, mars, mai, juillet, septembre et novembre"
+
+#: ../../scheduled-actions.rst:57
+msgid "``3,6,9`` means March, June and September"
+msgstr "``3,6,9`` signifie mars, juin et septembre"
+
+#: ../../scheduled-actions.rst:59
+msgid "Day of month"
+msgstr "Jour du mois"
+
+#: ../../scheduled-actions.rst:60
+msgid ""
+"The day of month during which the action will be run. Can be any valid cron "
+"expression, for instance:"
+msgstr ""
+"Le jour du mois durant lequel l'action sera exécutée. Peut être n'importe "
+"quelle expression cron valide, par exemple:"
+
+#: ../../scheduled-actions.rst:63
+msgid "``1`` means the 1st day of the month"
+msgstr "``1`` signifie le 1er jour du mois"
+
+#: ../../scheduled-actions.rst:64
+msgid "``1-10`` means from the 1st to the 10th day of the month"
+msgstr "``1-10`` signifie du 1er au 10ème jour du mois"
+
+#: ../../scheduled-actions.rst:65
+msgid ""
+"``*/5`` means the 1st, 6th, 11th, 16th, 21st, 26th and (if it exists) the 31st "
+"day of the month"
+msgstr ""
+"``*/5`` signifie le 1er, 6ème, 11ème, 21ème, 26ème et  (s'il existe) le 31ème "
+"jour du mois"
+
+#: ../../scheduled-actions.rst:66
+msgid "``1,11,21`` means the 1st, 11th and 21st day of the month"
+msgstr "``1,11,21`` signifie le 1er, 11ème et 21ème jour du mois"
+
+#: ../../scheduled-actions.rst:68
+msgid "Hour"
+msgstr "Heure"
+
+#: ../../scheduled-actions.rst:69
+msgid ""
+"The hour at which the action will be run. Unlike the other parameters, only a "
+"single number is allowed here."
+msgstr ""
+"L'heure à laquelle l'action sera exécutée. Contrairement aux autres paramètres, "
+"seul un nombre est autorisé ici."
+
+#: ../../scheduled-actions.rst:72
+msgid "Minute"
+msgstr "Minute"
+
+#: ../../scheduled-actions.rst:73
+msgid ""
+"The minute at which the action will be run. Unlike the other parameters, only a "
+"single number is allowed here."
+msgstr ""
+"La minute à laquelle l'action sera exécutée. Contrairement aux autres "
+"paramètres, seul un nombre est autorisé ici."
+
+#: ../../scheduled-actions.rst:76
+msgid ""
+"Finally, if the action itself declares more parameters, they will be "
+"configurable there too."
+msgstr ""
+"Enfin, si l'action elle-même déclare plus de paramètres, ils seront "
+"configurables ici."
+
+#: ../../scheduled-actions.rst:78
+msgid "When you are done, click on the \"Save\" button."
+msgstr "Quand vous avez fini, cliquez sur le bouton \"Enregistrer\"."
+
+#: ../../scheduled-actions.rst:83
+msgid "Scheduled action owner"
+msgstr "Propriétaire d'une action planifiée"
+
+#: ../../scheduled-actions.rst:85
+msgid ""
+"Scheduled actions are owned by the user who created it. When an action is run, "
+"it acts as if the owner was authenticated. So for instance, if an action "
+"creates an item without specifying an explicit owner, the action's owner will "
+"be the owner of the new item."
+msgstr ""
+"Les actions planifiées appartiennent à l'utilisateur l'ayant créée. Quand une "
+"action est exécutée, elle agit comme si le propriétaire était authentifié. Donc "
+"par exemple, si une action crée un contenu sans spécifier explicitement un "
+"propriétaire, le propriétaire de l'action planifiée sera le propriétaire du "
+"nouveau contenu."
+
+#: ../../scheduled-actions.rst:90
+msgid "Currently it's not possible to change the owner of a scheduled action."
+msgstr ""
+"Actuellement il n'est pas possible de modifier le propriétaire d'une action "
+"planifiée."
+
+#: ../../scheduled-actions.rst:93
+msgid "System scheduled actions"
+msgstr "Actions planifiées système"
+
+#: ../../scheduled-actions.rst:95
+msgid ""
+"System admistrators have the ability to add special scheduled actions, called "
+"system scheduled actions. These scheduled actions appear in the Omeka S "
+"administration interface but they cannot be modified nor deleted."
+msgstr ""
+"Les administrateurs système ont la possibilité d'ajouter des actions planifiées "
+"spéciales, appelées actions planifiées système. Ces actions planifiées "
+"apparaissent dans l'interface d'administration Omeka S mais ne peuvent pas être "
+"modifiées ni supprimées."
+
+#: ../../scheduled-actions.rst:99
+msgid ""
+"System scheduled actions can be added using the script ``bin/schedule-add``. A "
+"typical usage would be::"
+msgstr ""
+"Les actions planifiées système peuvent être ajoutées en utilisant le script "
+"``bin/schedule-add``. Une utilisation typique ressemble à ça::"
+
+#: ../../scheduled-actions.rst:109
+msgid "Scheduled actions added by this script are immediately active."
+msgstr "Les actions planifiées ajoutées par ce script sont actives immédiatement."
+
+#: ../../scheduled-actions.rst:111
+msgid "Run ``bin/schedule-add --help`` for more documentation."
+msgstr "Exécutez ``bin/schedule-add --help`` pour plus de documentation."
+
+#: ../../scheduled-actions.rst:113
+msgid ""
+"``bin/schedule-add`` have the ability to bypass the limitation on hour and "
+"minute schedule, so it can be used to schedule an action every minute (for "
+"instance). It can also be used to add non-system scheduled actions."
+msgstr ""
+"``bin/schedule-add`` a la possibilité d'outrepasser les limitations sur l'heure "
+"et la minute, donc il peut être utilisé pour planifier une action toutes les "
+"minutes (par exemple). Il peut aussi être utilisé pour ajouter des actions "
+"planifiées non-système."

@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var Laminas\Form\Form $form
+ */
+
+$this->htmlElement('body')->appendAttribute('class', 'add cronical cronical-scheduled-actions');
+$form->prepare();
+?>
+
+<?= $this->pageTitle($this->translate('New scheduled action'), 1, $this->translate('Scheduled actions')) ?>
+
+<?php $this->trigger('view.add.before'); ?>
+<?= $this->form()->openTag($form); ?>
+<?php $this->trigger('view.add.form.before', ['form' => $form]); ?>
+
+<div id="page-actions">
+    <button><?= $this->escapeHtml($this->translate('Add')) ?></button>
+</div>
+
+<?= $this->formCollection($form, false) ?>
+
+<?php $this->trigger('view.add.form.after', ['form' => $form]); ?>
+<?= $this->form()->closeTag() ?>
+<?php $this->trigger('view.add.after'); ?>

@@ -1,0 +1,64 @@
+<?php
+/**
+ * @var array $query
+ */
+?>
+<div class="field">
+    <div class="field-meta">
+        <label for="name"><?= $this->escapeHtml($this->translate('Search by action')) ?></label>
+    </div>
+
+    <div class="inputs">
+        <?php $scheduledActions = $this->api()->search('cronical_scheduled_actions')->getContent(); ?>
+        <select name="scheduled_action_id">
+            <option value=""></option>
+            <?php foreach ($scheduledActions as $scheduledAction): ?>
+                <?php $selected = isset($query['scheduled_action_id']) && $query['scheduled_action_id'] == $scheduledAction->id(); ?>
+                <option value="<?= $this->escapeHtml($scheduledAction->id()) ?>" <?= $selected ? 'selected' : '' ?>><?= $this->escapeHtml($scheduledAction->name()) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="field">
+    <div class="field-meta">
+        <label for="name"><?= $this->escapeHtml($this->translate('Search by status')) ?></label>
+    </div>
+
+    <div class="inputs">
+        <?php $statuses = [
+            'in_progress' => 'In Progress', // @translate
+            'completed' => 'Completed', // @translate
+            'error' => 'Error', // @translate
+        ]; ?>
+        <select name="status">
+            <option value=""></option>
+            <?php foreach ($statuses as $status => $statusLabel): ?>
+                <?php $selected = isset($query['status']) && $query['status'] == $status; ?>
+                <option value="<?= $this->escapeHtml($status) ?>" <?= $selected ? 'selected' : '' ?>><?= $this->escapeHtml($this->translate($statusLabel)) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<?php
+$startedAfter = new Laminas\Form\Element\Date('started_after');
+$startedAfter->setLabel('Started after'); // @translate
+$startedAfter->setValue($query['started_after'] ?? '');
+echo $this->formRow($startedAfter);
+
+$startedBefore = new Laminas\Form\Element\Date('started_before');
+$startedBefore->setLabel('Started before'); // @translate
+$startedBefore->setValue($query['started_before'] ?? '');
+echo $this->formRow($startedBefore);
+
+$endedAfter = new Laminas\Form\Element\Date('ended_after');
+$endedAfter->setLabel('Ended after'); // @translate
+$endedAfter->setValue($query['ended_after'] ?? '');
+echo $this->formRow($endedAfter);
+
+$endedBefore = new Laminas\Form\Element\Date('ended_before');
+$endedBefore->setLabel('Ended before'); // @translate
+$endedBefore->setValue($query['ended_before'] ?? '');
+echo $this->formRow($endedBefore);
+?>

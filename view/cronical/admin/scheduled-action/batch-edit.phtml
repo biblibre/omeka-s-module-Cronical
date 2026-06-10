@@ -1,0 +1,48 @@
+<?php
+/**
+ * @var Laminas\Form\Form $form
+ * @var Cronical\Api\Representation\scheduledActionRepresentation[] $resources
+ * @var array $query
+ * @var ?int $count
+ */
+
+$form->prepare();
+$this->htmlElement('body')->appendAttribute('class', 'batch-edit cronical cronical-scheduled-actions');
+?>
+
+<?= $this->pageTitle($this->translate('Batch edit scheduled actions'), 1, $this->translate('Scheduled actions')) ?>
+
+<?php $this->trigger('view.batch_edit.before'); ?>
+<?= $this->form()->openTag($form) ?>
+<?php $this->trigger('view.batch_edit.form.before', ['form' => $form]); ?>
+
+<?php foreach ($resources as $resource): ?>
+    <input type="hidden" name="resource_ids[]" value="<?= $this->escapeHtml($resource->id()) ?>">
+<?php endforeach; ?>
+<input type="hidden" name="query" value="<?= $this->escapeHtml(json_encode($query)) ?>">
+
+<div id="page-actions">
+    <input type="submit" name="batch_update" value="<?= $this->escapeHtml($this->translate('Save')) ?>">
+</div>
+
+<?= $this->formCollection($form, false) ?>
+
+<?php $this->trigger('view.batch_update.form.after', ['form' => $form]); ?>
+<?= $this->form()->closeTag() ?>
+
+<div class="sidebar always-open">
+    <h3><?= $this->escapeHtml($this->translate('Affected scheduled actions')) ?></h3>
+
+    <?php if ($resources): ?>
+        <p><?= $this->escapeHtml(sprintf($this->translate('You are editing the following %s scheduled actions:'), count($resources))) ?></p>
+        <ul class="batch-selected">
+            <?php foreach ($resources as $resource): ?>
+                <li><?= $resource->link($resource->name(), null, ['target' => '_blank']) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p><?= sprintf($this->escapeHtml($this->translate('You are editing %s scheduled actions.')), $this->hyperlink(number_format($count), $this->url('admin/cronical/default', ['controller' => 'scheduled-action'], ['query' => $query]), ['target' => '_blank'])) ?></p>
+    <?php endif; ?>
+</div>
+
+<?php $this->trigger('view.batch_edit.after'); ?>

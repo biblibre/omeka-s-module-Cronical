@@ -1,0 +1,38 @@
+<?php
+/**
+ * @var Cronical\Api\Representation\ScheduledActionRepresentation $resource
+ */
+?>
+<h3>
+    <?= $resource->link(sprintf('#%d', $resource->id())) ?>
+</h3>
+
+<?php $scheduledAction = $resource->scheduledAction(); ?>
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Scheduled action')) ?></h4>
+    <div class="value"><?= $scheduledAction->link($scheduledAction->name()) ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Started')) ?></h4>
+    <div class="value"><?= $this->i18n()->dateFormat($resource->started(), 'full', 'short') ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Ended')) ?></h4>
+    <div class="value"><?= $this->i18n()->dateFormat($resource->ended(), 'full', 'short') ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Status')) ?></h4>
+    <div class="value"><?= $this->escapeHtml($this->translate($resource->statusLabel())) ?></div>
+</div>
+
+<?php if ($job = $resource->job()): ?>
+    <div class="meta-group">
+        <h4><?= $this->escapeHtml($this->translate('Job')) ?></h4>
+        <div class="value"><?= $job->link(sprintf('#%d (%s)', $job->id(), $this->translate($job->statusLabel()))) ?></div>
+    </div>
+<?php endif; ?>
+
+<?php $this->trigger('view.details', ['entity' => $resource]); ?>

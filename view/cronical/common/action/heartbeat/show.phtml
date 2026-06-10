@@ -1,0 +1,12 @@
+<h2><?= $this->escapeHtml($this->translate('Action settings')) ?></h2>
+
+<dl>
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Log level')) ?></dt>
+        <dd class="value">
+            <?php $log_level = $scheduledAction->setting('log_level', 7); ?>
+            <?php $action = $this->cronical()->getAction($scheduledAction->action()); ?>
+            <?= $this->escapeHtml($this->translate($action->getLogLevelDescription($log_level))) ?>
+        </dd>
+    </div>
+</dl>

@@ -1,0 +1,80 @@
+<?php
+/**
+ * @var Cronical\Api\Representation\ScheduledActionRepresentation $resource
+ */
+?>
+<h3>
+    <a href="<?= $this->escapeHtml($resource->url()) ?>"><?= $this->escapeHtml($resource->name()) ?></a>
+</h3>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('ID')) ?></h4>
+    <div class="value"><?= $this->escapeHtml($resource->id()) ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Action')) ?></h4>
+    <div class="value"><?= $this->escapeHtml(sprintf('%s: %s', $this->translate($resource->actionGroupLabel()), $this->translate($resource->actionLabel()))) ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Action description')) ?></h4>
+    <div class="value"><?= $this->escapeHtml($this->translate($resource->actionDescription())) ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Cron expression')) ?></h4>
+    <div class="value"><code><?= $this->escapeHtml($resource->cronExpression()) ?></code></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Is active')) ?></h4>
+    <div class="value"><?= $this->escapeHtml($resource->isActive() ? $this->translate('Yes') : $this->translate('No')) ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Is a system action')) ?></h4>
+    <div class="value"><?= $this->escapeHtml($resource->isSystem() ? $this->translate('Yes') : $this->translate('No')) ?></div>
+</div>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Run history size')) ?></h4>
+    <div class="value"><?= $this->escapeHtml($resource->runHistorySize()) ?></div>
+</div>
+
+<?php if ($latestRun = $resource->latestRun()): ?>
+    <div class="meta-group">
+        <h4><?= $this->escapeHtml($this->translate('Latest run')) ?></h4>
+
+        <div class="value">
+            <strong><?= $this->escapeHtml($this->translate('Started:')) ?></strong> <?= $this->i18n()->dateFormat($latestRun->started(), 'full', 'short') ?>
+        </div>
+
+        <div class="value">
+            <strong><?= $this->escapeHtml($this->translate('Ended:')) ?></strong> <?= $this->i18n()->dateFormat($latestRun->ended(), 'full', 'short') ?>
+        </div>
+
+        <div class="value">
+            <strong><?= $this->escapeHtml($this->translate('Status:')) ?></strong> <?= $this->escapeHtml($this->translate($latestRun->statusLabel())) ?>
+        </div>
+
+        <?php if ($job = $latestRun->job()): ?>
+            <div class="value">
+                <strong><?= $this->escapeHtml($this->translate('Job:')) ?></strong>
+                <?= $job->link(sprintf('#%d (%s)', $job->id(), $this->translate($job->statusLabel()))) ?>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+<div class="meta-group">
+    <h4><?= $this->escapeHtml($this->translate('Runs')) ?></h4>
+    <div class="value">
+        <?= $this->hyperlink(
+            $this->translate('view runs'),
+            $this->url('admin/cronical/default', ['controller' => 'scheduled-action-run'], ['query' => ['scheduled_action_id' => $resource->id()]])
+        ) ?>
+    </div>
+</div>
+
+<?php $this->trigger('view.details', ['entity' => $resource]); ?>

@@ -1,0 +1,46 @@
+<?php
+/**
+ * @var Cronical\Api\Representation\ScheduledActionRepresentation $scheduledAction
+ */
+$this->htmlElement('body')->appendAttribute('class', 'show cronical cronical-scheduled-actions');
+?>
+
+<?= $this->pageTitle(sprintf('#%d', $scheduledActionRun->id()), 1, $this->translate('Scheduled action runs')) ?>
+
+<div id="page-actions">
+    <?php $this->trigger('view.show.page_actions', ['resource' => $scheduledActionRun]); ?>
+</div>
+
+<?php $this->trigger('view.show.before'); ?>
+
+<dl>
+    <?php $scheduledAction = $scheduledActionRun->scheduledAction(); ?>
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Scheduled action')) ?></dt>
+        <dd class="value"><?= $scheduledAction->link($scheduledAction->name()) ?></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Started')) ?></dt>
+        <dd class="value"><?= $this->i18n()->dateFormat($scheduledActionRun->started(), 'full', 'short') ?></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Ended')) ?></dt>
+        <dd class="value"><?= $this->i18n()->dateFormat($scheduledActionRun->ended(), 'full', 'short') ?></dd>
+    </div>
+
+    <div class="property">
+        <dt><?= $this->escapeHtml($this->translate('Status')) ?></dt>
+        <dd class="value"><?= $this->escapeHtml($this->translate($scheduledActionRun->statusLabel())) ?></dd>
+    </div>
+
+    <?php if ($job = $scheduledActionRun->job()): ?>
+        <div class="property">
+            <dt><?= $this->escapeHtml($this->translate('Job')) ?></dt>
+            <dd class="value"><?= $job->link(sprintf('#%d (%s)', $job->id(), $this->translate($job->statusLabel()))) ?></dd>
+        </div>
+    <?php endif; ?>
+</dl>
+
+<?php $this->trigger('view.show.after'); ?>

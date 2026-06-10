@@ -1,0 +1,40 @@
+<?php
+$this->headLink()->prependStylesheet($this->assetUrl('css/advanced-search.css', 'Omeka'));
+$this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));
+$this->htmlElement('body')->appendAttribute('class', 'search cronical cronical-scheduled-actions');
+?>
+
+<?= $this->pageTitle($this->translate('Advanced search'), 1, $this->translate('Scheduled actions')) ?>
+
+<form id="advanced-search" method="get" action="<?= $this->escapeHtml($this->url('admin/cronical/default', ['controller' => 'scheduled-action-run'])) ?>">
+    <div id="page-actions">
+        <?= $this->cancelButton() ?>
+
+        <button><?= $this->escapeHtml($this->translate('Search')) ?></button>
+    </div>
+
+    <?php
+    $query = $this->params()->fromQuery();
+    $partials = [
+        'cronical/common/advanced-search/scheduled-action-runs',
+    ];
+
+    $filterResults = $this->trigger(
+        'view.advanced_search',
+        [
+            'query' => $query,
+            'partials' => $partials,
+        ],
+        true
+    );
+    $partials = $filterResults['partials'];
+    ?>
+
+    <div class="advanced-search-content">
+        <?php
+        foreach ($partials as $partial) {
+            echo $this->partial($partial, ['query' => $query]);
+        }
+        ?>
+    </div>
+</form>

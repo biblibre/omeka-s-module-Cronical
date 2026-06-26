@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; Documentation Cronical </title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=e9c544c0" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d1a510d7"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Mise en place initiale" href="first-time-setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Cronical
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Manuel utilisateur</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="first-time-setup.html">Mise en place initiale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduled-actions.html">Actions planifiées</a></li>
+<li class="toctree-l1"><a class="reference internal" href="builtin-actions.html">Actions intégrées</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation développeur</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer/write-new-action.html">Écrire une nouvelle action</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Cronical</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Lien vers cette rubrique"></a></h1>
+<p>Cronical est un planificateur d’action pour Omeka.</p>
+<p>Il permet d’exécuter des actions diverses selon la date et l’heure. Les actions peuvent être exécutées chaque jour, chaque semaine, chaque mois, chaque année, ou n’importe quelle autre fréquence (par exemple, « tous les 1ers et 15 de chaque mois »). Chaque action a sa propre fréquence.</p>
+<p>Les actions elles-mêmes sont principalement fournies par d’autres modules.</p>
+<section id="requirements">
+<h2>Pré-requis<a class="headerlink" href="#requirements" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Omeka S &gt;= 4.1.0</p></li>
+<li><p>Accès à la <em>crontab</em> du serveur (ou équivalent) pour mettre en place un script à exécuter périodiquement.</p></li>
+</ul>
+</section>
+<section id="features">
+<h2>Fonctionnalités<a class="headerlink" href="#features" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Exécute des actions automatiquement selon la date (jour du mois, mois, jour de la semaine) et l’heure (heure, minute)</p></li>
+<li><p>Toutes les expressions cron valides sont autorisées pour le jour du mois, le mois et le jour de la semaine.</p></li>
+<li><p>L’heure et la minute sont limitées de sorte que chaque action ne puisse pas être exécutée plus d’une fois par jour, mais les administrateurs systèmes peuvent outrepasser cette limitation pour planifier des actions à exécuter jusqu’à une fois par minute.</p></li>
+<li><p>Les modules Omeka S peuvent founir leurs propres actions</p></li>
+<li><p>Une action peut démarrer une tâche de fond si l’opération est longue, mais c’est facultatif.</p></li>
+</ul>
+</section>
+<section id="comparison-with-similar-modules">
+<h2>Comparaison avec des modules similaires<a class="headerlink" href="#comparison-with-similar-modules" title="Lien vers cette rubrique"></a></h2>
+<section id="cron">
+<h3>Cron<a class="headerlink" href="#cron" title="Lien vers cette rubrique"></a></h3>
+<p><a class="reference external" href="https://omeka.org/s/modules/Cron/">Cron</a> est un module pour Omeka S qui fournit un système d’action planifiée permettant aux modules de déclarer et exécuter des actions récurrentes.</p>
+<ul class="simple">
+<li><p>Avec Cron, toutes les actions planifiées sont exécutées à la même fréquence. Avec Cronical, chaque action a sa propre fréquence.</p></li>
+<li><p>Cronical a plus d’options concernant la planification. Vous pouvez configurer l’heure, le jour du mois, le mois et le jour de la semaine.</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Manuel utilisateur</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="first-time-setup.html">Mise en place initiale</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="first-time-setup.html#cron">cron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first-time-setup.html#systemd">systemd</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scheduled-actions.html">Actions planifiées</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scheduled-actions.html#scheduled-action-owner">Propriétaire d’une action planifiée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduled-actions.html#system-scheduled-actions">Actions planifiées système</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="builtin-actions.html">Actions intégrées</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="builtin-actions.html#heartbeat">Battement de cœur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="builtin-actions.html#index-full-text">Indexation texte intégral</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Documentation développeur</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer/write-new-action.html">Écrire une nouvelle action</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/write-new-action.html#module-config">Configuration du module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/write-new-action.html#the-action-class">La classe d’action</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="first-time-setup.html" class="btn btn-neutral float-right" title="Mise en place initiale" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2026, BibLibre.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

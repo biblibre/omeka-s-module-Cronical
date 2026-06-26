@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Actions planifiées &mdash; Documentation Cronical </title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=e9c544c0" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d1a510d7"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Actions intégrées" href="builtin-actions.html" />
+    <link rel="prev" title="Mise en place initiale" href="first-time-setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Cronical
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Manuel utilisateur</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="first-time-setup.html">Mise en place initiale</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Actions planifiées</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scheduled-action-owner">Propriétaire d’une action planifiée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-scheduled-actions">Actions planifiées système</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="builtin-actions.html">Actions intégrées</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation développeur</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer/write-new-action.html">Écrire une nouvelle action</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cronical</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Actions planifiées</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/scheduled-actions.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scheduled-actions">
+<h1>Actions planifiées<a class="headerlink" href="#scheduled-actions" title="Lien vers cette rubrique"></a></h1>
+<p>Pour gérer les actions planifiées, allez dans l’interface d’administration d’Omeka S et cliquez sur « Actions planifiées » dans le menu de navigation.</p>
+<img alt="_images/scheduled-action-browse-empty.fr.png" src="_images/scheduled-action-browse-empty.fr.png" />
+<p>Cliquez sur « Ajouter une nouvelle action planifiée »</p>
+<img alt="_images/scheduled-action-add-form.fr.png" src="_images/scheduled-action-add-form.fr.png" />
+<p>Choisissez une action et cliquez sur le bouton « Ajouter ».</p>
+<p>Cronical fournit quelques <a class="reference internal" href="builtin-actions.html"><span class="doc">actions intégrées</span></a>. D’autres modules activés peuvent fournir plus d’actions.</p>
+<img alt="_images/scheduled-action-edit-form.fr.png" src="_images/scheduled-action-edit-form.fr.png" />
+<p>Les actions planifiées ont les paramètres suivants:</p>
+<dl>
+<dt>Nom</dt><dd><p>Un nom descriptif pour cette action planifiée particulière (une même action peut être planifiée plusieurs fois).</p>
+</dd>
+<dt>Active</dt><dd><p>Seules les actions planifiées actives sont exécutées, vous pouvez donc utiliser ce paramètre pour désactiver temporairement une action planifiée.</p>
+</dd>
+<dt>Taille de l’historique d’exécutions</dt><dd><p>Chaque fois qu’une action planifiée est exécutée, Cronical garde quelques informations sur son exécution, comme son heure de début ou son statut.</p>
+<p>Pour éviter d’avoir une table de base de données en constant expansion, Cronical garde uniquement les exécutions les plus récentes et supprime les autres. Ce paramètre permet de configurer combien d’exécutions vous voulez garder pour cette action planifiée.</p>
+</dd>
+</dl>
+<p>La section suivante permet de configurer quand l’action sera exécutée. Elle devrait être familière à ceux qui sont habitués à <code class="docutils literal notranslate"><span class="pre">cron</span></code> mais il y a quelques différences.</p>
+<dl class="simple">
+<dt>Jour de la semaine</dt><dd><p>La jour de la semaine durant lequel l’action sera exécuté. Peut être n’importe quelle expression cron valide, par exemple:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> signifie dimanche</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1-5</span></code> signifie de lundi à vendredi</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/2</span></code> signifie dimanche, mardi, jeudi et samedi</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0,6</span></code> signifie dimanche et samedi</p></li>
+</ul>
+</dd>
+<dt>Mois</dt><dd><p>Le mois durant lequel l’action sera exécutée. Peut être n’importe quelle expression cron valide, par exemple:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> signifie janvier</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2-6</span></code> signifie de février à juin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/2</span></code> signifie janvier, mars, mai, juillet, septembre et novembre</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3,6,9</span></code> signifie mars, juin et septembre</p></li>
+</ul>
+</dd>
+<dt>Jour du mois</dt><dd><p>Le jour du mois durant lequel l’action sera exécutée. Peut être n’importe quelle expression cron valide, par exemple:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> signifie le 1er jour du mois</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1-10</span></code> signifie du 1er au 10ème jour du mois</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/5</span></code> signifie le 1er, 6ème, 11ème, 21ème, 26ème et  (s’il existe) le 31ème jour du mois</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1,11,21</span></code> signifie le 1er, 11ème et 21ème jour du mois</p></li>
+</ul>
+</dd>
+<dt>Heure</dt><dd><p>L’heure à laquelle l’action sera exécutée. Contrairement aux autres paramètres, seul un nombre est autorisé ici.</p>
+</dd>
+<dt>Minute</dt><dd><p>La minute à laquelle l’action sera exécutée. Contrairement aux autres paramètres, seul un nombre est autorisé ici.</p>
+</dd>
+</dl>
+<p>Enfin, si l’action elle-même déclare plus de paramètres, ils seront configurables ici.</p>
+<p>Quand vous avez fini, cliquez sur le bouton « Enregistrer ».</p>
+<img alt="_images/scheduled-action-browse.png" src="_images/scheduled-action-browse.png" />
+<section id="scheduled-action-owner">
+<h2>Propriétaire d’une action planifiée<a class="headerlink" href="#scheduled-action-owner" title="Lien vers cette rubrique"></a></h2>
+<p>Les actions planifiées appartiennent à l’utilisateur l’ayant créée. Quand une action est exécutée, elle agit comme si le propriétaire était authentifié. Donc par exemple, si une action crée un contenu sans spécifier explicitement un propriétaire, le propriétaire de l’action planifiée sera le propriétaire du nouveau contenu.</p>
+<p>Actuellement il n’est pas possible de modifier le propriétaire d’une action planifiée.</p>
+</section>
+<section id="system-scheduled-actions">
+<h2>Actions planifiées système<a class="headerlink" href="#system-scheduled-actions" title="Lien vers cette rubrique"></a></h2>
+<p>Les administrateurs système ont la possibilité d’ajouter des actions planifiées spéciales, appelées actions planifiées système. Ces actions planifiées apparaissent dans l’interface d’administration Omeka S mais ne peuvent pas être modifiées ni supprimées.</p>
+<p>Les actions planifiées système peuvent être ajoutées en utilisant le script <code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span></code>. Une utilisation typique ressemble à ça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bin</span><span class="o">/</span><span class="n">schedule</span><span class="o">-</span><span class="n">add</span> \
+    <span class="o">--</span><span class="n">owner</span><span class="o">-</span><span class="nb">id</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">action</span> <span class="s2">&quot;Cronical</span><span class="se">\\</span><span class="s2">Action</span><span class="se">\\</span><span class="s2">Heartbeat&quot;</span> \
+    <span class="o">--</span><span class="n">cron</span><span class="o">-</span><span class="n">expression</span> <span class="s2">&quot;0 0 * * *&quot;</span> \
+    <span class="o">--</span><span class="n">system</span> \
+    <span class="o">--</span><span class="n">name</span> <span class="s2">&quot;Heartbeat (system)&quot;</span> \
+    <span class="o">--</span><span class="n">settings</span> <span class="s1">&#39;{&quot;log_level&quot;: 4}&#39;</span>
+</pre></div>
+</div>
+<p>Les actions planifiées ajoutées par ce script sont actives immédiatement.</p>
+<p>Exécutez <code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span> <span class="pre">--help</span></code> pour plus de documentation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span></code> a la possibilité d’outrepasser les limitations sur l’heure et la minute, donc il peut être utilisé pour planifier une action toutes les minutes (par exemple). Il peut aussi être utilisé pour ajouter des actions planifiées non-système.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="first-time-setup.html" class="btn btn-neutral float-left" title="Mise en place initiale" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="builtin-actions.html" class="btn btn-neutral float-right" title="Actions intégrées" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2026, BibLibre.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

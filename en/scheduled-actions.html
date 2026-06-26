@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scheduled actions &mdash; Cronical  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=e9c544c0" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Built-in actions" href="builtin-actions.html" />
+    <link rel="prev" title="First time setup" href="first-time-setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Cronical
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="first-time-setup.html">First time setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scheduled actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scheduled-action-owner">Scheduled action owner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-scheduled-actions">System scheduled actions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="builtin-actions.html">Built-in actions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer/write-new-action.html">Write a new action</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cronical</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Scheduled actions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/scheduled-actions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scheduled-actions">
+<h1>Scheduled actions<a class="headerlink" href="#scheduled-actions" title="Link to this heading"></a></h1>
+<p>To manage scheduled actions, go to Omeka S administration interface and click
+on “Scheduled actions” in the navigation menu.</p>
+<img alt="_images/scheduled-action-browse-empty.png" src="_images/scheduled-action-browse-empty.png" />
+<p>Click on “Add new scheduled action”</p>
+<img alt="_images/scheduled-action-add-form.png" src="_images/scheduled-action-add-form.png" />
+<p>Choose an action then click on the “Add” button.</p>
+<p>Cronical provides a few <a class="reference internal" href="builtin-actions.html"><span class="doc">built-in actions</span></a>. Other
+enabled modules can provide more actions.</p>
+<img alt="_images/scheduled-action-edit-form.png" src="_images/scheduled-action-edit-form.png" />
+<p>Scheduled actions have the following parameters:</p>
+<dl>
+<dt>Name</dt><dd><p>A descriptive name of this particular scheduled action (the same action can
+be scheduled more than once).</p>
+</dd>
+<dt>Active</dt><dd><p>Only active scheduled actions are run, so you can use this parameter
+to temporarily disable a scheduled action.</p>
+</dd>
+<dt>Run history size</dt><dd><p>Every time a scheduled action is run, Cronical keep some information about
+this execution (or “run”), like the time it started or its status.</p>
+<p>To avoid an evergrowing database table of old runs, Cronical only keep the
+most recent runs and delete the others. This parameter allows you to
+configure how many runs you want to keep for that scheduled action.</p>
+</dd>
+</dl>
+<p>The next section allows to configure when the action will be run. It should be
+familiar to those that are used to configure <code class="docutils literal notranslate"><span class="pre">cron</span></code> but there are some differences.</p>
+<dl class="simple">
+<dt>Day of week</dt><dd><p>The day of week during which the action will be run. Can be any valid cron
+expression, for instance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> means Sunday</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1-5</span></code> means from Monday to Friday</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/2</span></code> means Sunday, Tuesday, Thursday and Saturday</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0,6</span></code> means Sunday and Saturday</p></li>
+</ul>
+</dd>
+<dt>Month</dt><dd><p>The month during which the action will be run. Can be any valid cron
+expression, for instance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> means January</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2-6</span></code> means from February to June</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/2</span></code> means January, March, May, July, September and November</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3,6,9</span></code> means March, June and September</p></li>
+</ul>
+</dd>
+<dt>Day of month</dt><dd><p>The day of month during which the action will be run. Can be any valid cron
+expression, for instance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> means the 1st day of the month</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1-10</span></code> means from the 1st to the 10th day of the month</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/5</span></code> means the 1st, 6th, 11th, 16th, 21st, 26th and (if it exists) the 31st day of the month</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1,11,21</span></code> means the 1st, 11th and 21st day of the month</p></li>
+</ul>
+</dd>
+<dt>Hour</dt><dd><p>The hour at which the action will be run. Unlike the other parameters, only
+a single number is allowed here.</p>
+</dd>
+<dt>Minute</dt><dd><p>The minute at which the action will be run. Unlike the other parameters,
+only a single number is allowed here.</p>
+</dd>
+</dl>
+<p>Finally, if the action itself declares more parameters, they will be configurable there too.</p>
+<p>When you are done, click on the “Save” button.</p>
+<img alt="_images/scheduled-action-browse.png" src="_images/scheduled-action-browse.png" />
+<section id="scheduled-action-owner">
+<h2>Scheduled action owner<a class="headerlink" href="#scheduled-action-owner" title="Link to this heading"></a></h2>
+<p>Scheduled actions are owned by the user who created it. When an action is run,
+it acts as if the owner was authenticated. So for instance, if an action
+creates an item without specifying an explicit owner, the action’s owner will
+be the owner of the new item.</p>
+<p>Currently it’s not possible to change the owner of a scheduled action.</p>
+</section>
+<section id="system-scheduled-actions">
+<h2>System scheduled actions<a class="headerlink" href="#system-scheduled-actions" title="Link to this heading"></a></h2>
+<p>System admistrators have the ability to add special scheduled actions, called
+system scheduled actions. These scheduled actions appear in the Omeka S
+administration interface but they cannot be modified nor deleted.</p>
+<p>System scheduled actions can be added using the script <code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span></code>. A typical usage would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bin</span><span class="o">/</span><span class="n">schedule</span><span class="o">-</span><span class="n">add</span> \
+    <span class="o">--</span><span class="n">owner</span><span class="o">-</span><span class="nb">id</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">action</span> <span class="s2">&quot;Cronical</span><span class="se">\\</span><span class="s2">Action</span><span class="se">\\</span><span class="s2">Heartbeat&quot;</span> \
+    <span class="o">--</span><span class="n">cron</span><span class="o">-</span><span class="n">expression</span> <span class="s2">&quot;0 0 * * *&quot;</span> \
+    <span class="o">--</span><span class="n">system</span> \
+    <span class="o">--</span><span class="n">name</span> <span class="s2">&quot;Heartbeat (system)&quot;</span> \
+    <span class="o">--</span><span class="n">settings</span> <span class="s1">&#39;{&quot;log_level&quot;: 4}&#39;</span>
+</pre></div>
+</div>
+<p>Scheduled actions added by this script are immediately active.</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span> <span class="pre">--help</span></code> for more documentation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span></code> have the ability to bypass the limitation on hour and
+minute schedule, so it can be used to schedule an action every minute (for
+instance). It can also be used to add non-system scheduled actions.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="first-time-setup.html" class="btn btn-neutral float-left" title="First time setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="builtin-actions.html" class="btn btn-neutral float-right" title="Built-in actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, BibLibre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

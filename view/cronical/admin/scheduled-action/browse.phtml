@@ -76,8 +76,8 @@ $userIsAllowedBatchDelete = $this->userIsAllowed('Cronical\Api\Adapter\Scheduled
             </thead>
             <tbody>
                 <?php foreach ($scheduledActions as $scheduledAction): ?>
-                    <?php $userIsAllowedUpdate = $scheduledAction->userIsAllowed('update'); ?>
-                    <?php $userIsAllowedDelete = $scheduledAction->userIsAllowed('delete'); ?>
+                    <?php $userIsAllowedUpdate = $scheduledAction->userIsAllowed('update') && !$scheduledAction->isSystem(); ?>
+                    <?php $userIsAllowedDelete = $scheduledAction->userIsAllowed('delete') && !$scheduledAction->isSystem(); ?>
                     <?php $action = $this->cronical()->getAction($scheduledAction->action()); ?>
                     <tr>
                         <td>

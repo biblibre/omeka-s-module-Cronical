@@ -92,14 +92,14 @@ class ScheduledActionRunAdapter extends AbstractEntityAdapter
         if (!empty($query['scheduled_action_id'])) {
             $qb->andWhere($qb->expr()->eq(
                 "omeka_root.scheduledAction",
-                $qb->createNamedParameter($query['scheduled_action_id']))
+                $this->createNamedParameter($qb, $query['scheduled_action_id']))
             );
         }
 
         if (!empty($query['status'])) {
             $qb->andWhere($qb->expr()->eq(
                 "omeka_root.status",
-                $qb->createNamedParameter($query['status']))
+                $this->createNamedParameter($qb, $query['status']))
             );
         }
 
@@ -107,7 +107,7 @@ class ScheduledActionRunAdapter extends AbstractEntityAdapter
         if ($started_before !== '') {
             $qb->andWhere($qb->expr()->lte(
                 'omeka_root.started',
-                $qb->createNamedParameter($started_before)
+                $this->createNamedParameter($qb, $started_before)
             ));
         }
 
@@ -115,7 +115,7 @@ class ScheduledActionRunAdapter extends AbstractEntityAdapter
         if ($started_after !== '') {
             $qb->andWhere($qb->expr()->gte(
                 'omeka_root.started',
-                $qb->createNamedParameter($started_after)
+                $this->createNamedParameter($qb, $started_after)
             ));
         }
 
@@ -123,7 +123,7 @@ class ScheduledActionRunAdapter extends AbstractEntityAdapter
         if ($ended_before !== '') {
             $qb->andWhere($qb->expr()->lte(
                 'omeka_root.ended',
-                $qb->createNamedParameter($ended_before)
+                $this->createNamedParameter($qb, $ended_before)
             ));
         }
 
@@ -131,7 +131,7 @@ class ScheduledActionRunAdapter extends AbstractEntityAdapter
         if ($ended_after !== '') {
             $qb->andWhere($qb->expr()->gte(
                 'omeka_root.ended',
-                $qb->createNamedParameter($ended_after)
+                $this->createNamedParameter($qb, $ended_after)
             ));
         }
     }

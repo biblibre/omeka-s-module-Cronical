@@ -206,47 +206,47 @@ class ScheduledActionAdapter extends AbstractEntityAdapter
         if (isset($query['owner_id']) && is_numeric($query['owner_id'])) {
             $qb->andWhere($qb->expr()->eq(
                 "omeka_root.owner",
-                $qb->createNamedParameter($query['owner_id']))
+                $this->createNamedParameter($qb, $query['owner_id']))
             );
         }
 
         if (!empty($query['action'])) {
             $qb->andWhere($qb->expr()->eq(
                 "omeka_root.action",
-                $qb->createNamedParameter($query['action']))
+                $this->createNamedParameter($qb, $query['action']))
             );
         }
 
         if (isset($query['is_active']) && trim($query['is_active']) !== '') {
             $qb->andWhere($qb->expr()->eq(
                 "omeka_root.isActive",
-                $qb->createNamedParameter((bool) $query['is_active']))
+                $this->createNamedParameter($qb, (bool) $query['is_active']))
             );
         }
 
         if (isset($query['is_system']) && trim($query['is_system']) !== '') {
             $qb->andWhere($qb->expr()->eq(
                 "omeka_root.isSystem",
-                $qb->createNamedParameter((bool) $query['is_system']))
+                $this->createNamedParameter($qb, (bool) $query['is_system']))
             );
         }
 
         $latest_run_started_before = trim($query['latest_run_started_before'] ?? '');
         $latest_run_started_after = trim($query['latest_run_started_after'] ?? '');
         if ($latest_run_started_before !== '' || $latest_run_started_after !== '') {
-            $latestRunAlias = $qb->createAlias();
+            $latestRunAlias = $this->createAlias();
             $this->joinLatestRun($qb, $latestRunAlias);
 
             if ($latest_run_started_before !== '') {
                 $qb->andWhere($qb->expr()->lte(
                     "$latestRunAlias.started",
-                    $qb->createNamedParameter($latest_run_started_before)
+                    $this->createNamedParameter($qb, $latest_run_started_before)
                 ));
             }
             if ($latest_run_started_after !== '') {
                 $qb->andWhere($qb->expr()->gte(
                     "$latestRunAlias.started",
-                    $qb->createNamedParameter($latest_run_started_after)
+                    $this->createNamedParameter($qb, $latest_run_started_after)
                 ));
             }
         }
@@ -255,7 +255,7 @@ class ScheduledActionAdapter extends AbstractEntityAdapter
         if ($scheduled_before !== '') {
             $qb->andWhere($qb->expr()->lte(
                 'omeka_root.scheduled',
-                $qb->createNamedParameter($scheduled_before)
+                $this->createNamedParameter($qb, $scheduled_before)
             ));
         }
 
@@ -263,7 +263,7 @@ class ScheduledActionAdapter extends AbstractEntityAdapter
         if ($scheduled_after !== '') {
             $qb->andWhere($qb->expr()->gte(
                 'omeka_root.scheduled',
-                $qb->createNamedParameter($scheduled_after)
+                $this->createNamedParameter($qb, $scheduled_after)
             ));
         }
     }
@@ -272,7 +272,7 @@ class ScheduledActionAdapter extends AbstractEntityAdapter
     {
         if (isset($query['sort_by']) && is_string($query['sort_by'])) {
             if ($query['sort_by'] === 'latest_run_started') {
-                $latestRunAlias = $qb->createAlias();
+                $latestRunAlias = $this->createAlias();
                 $this->joinLatestRun($qb, $latestRunAlias);
                 $qb->addOrderBy("$latestRunAlias.started", $query['sort_order']);
             }
@@ -341,8 +341,8 @@ class ScheduledActionAdapter extends AbstractEntityAdapter
 
     protected function joinLatestRun(QueryBuilder $qb, string $alias): void
     {
-        $subQb = $this->createQueryBuilder();
-        $runAlias = $qb->createAlias();
+        $subQb = $this->getEntityManager()->createQueryBuilder();
+        $runAlias = $this->createAlias();
         $subQb
             ->select("MAX($runAlias.id)")
             ->from(ScheduledActionRun::class, $runAlias)

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Prevent system scheduled actions to be selected for batch operations
+- Fix compatibility with Omeka S 4.1
 
 ## [0.1.0] - 2026-06-26
 

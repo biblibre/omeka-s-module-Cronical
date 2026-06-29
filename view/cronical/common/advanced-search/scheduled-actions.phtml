@@ -22,7 +22,7 @@
 </div>
 
 <?php
-$ownerIds = $this->api()->search('cronical_scheduled_actions', [], ['returnScalar' => 'owner'])->getContent();
+$ownerIds = $this->api()->search('cronical_scheduled_actions', ['return_scalar' => 'owner'])->getContent();
 $ownerIds = array_values(array_unique($ownerIds));
 $owners = $this->api()->search('users', ['id' => $ownerIds])->getContent();
 ?>

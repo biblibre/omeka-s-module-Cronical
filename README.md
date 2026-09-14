@@ -48,10 +48,15 @@ The complete documentation of Cronical can be found at
 a scheduled action system allowing modules to register and execute recurring
 actions.
 
-* With Cron, every scheduled action is executed with the same schedule. With
-  Cronical, each action has its own schedule.
+This comparison is based on Cron 3.4.3
+
 * Cronical has more options regarding schedule. You can configure the time, the
-  day of the month, the month and the day of the week.
+  day of the month, the month and the day of the week. Cron only allows hourly,
+  daily, weekly and monthly frequencies.
+* Cronical allows to schedule the same action multiple times (useful if the
+  action accepts parameters and you need different parameters at different
+  times).
+* Cron allows to bypass schedule with a "run now" feature. Cronical does not.
 
 ## How to contribute
 

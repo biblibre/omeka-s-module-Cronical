@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Prevent infinite loop when searching for the next run date
+- Prevent inactive users to run scheduled actions
 
 ## [0.1.1] - 2026-06-29
 

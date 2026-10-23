@@ -138,7 +138,13 @@ while ($scheduledActionAssoc) {
         $em = $services->get('Omeka\EntityManager');
         $user = $em->find('Omeka\Entity\User', $scheduledActionAssoc['owner_id']);
         if (!$user) {
-            fprintf("Error: User #%d does not exist\n", $scheduledActionAssoc['owner_id']);
+            fprintf(STDERR, "Error: User #%d does not exist\n", $scheduledActionAssoc['owner_id']);
+            exit(1);
+        }
+
+        // Do not run actions on behalf of deactivated users
+        if (!$user->isActive()) {
+            fprintf(STDERR, "Error: User #%d is not active\n", $scheduledActionAssoc['owner_id']);
             exit(1);
         }
 

@@ -48,6 +48,8 @@
 <li class="toctree-l1"><a class="reference internal" href="first-time-setup.html">First time setup</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Scheduled actions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#scheduled-action-owner">Scheduled action owner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-history">Run history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permissions">Permissions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#system-scheduled-actions">System scheduled actions</a></li>
 </ul>
 </li>
@@ -139,12 +141,21 @@ expression, for instance:</p>
 </ul>
 </dd>
 <dt>Hour</dt><dd><p>The hour at which the action will be run. Unlike the other parameters, only
-a single number is allowed here.</p>
+a single number (from 0 to 23) is allowed here.</p>
 </dd>
 <dt>Minute</dt><dd><p>The minute at which the action will be run. Unlike the other parameters,
-only a single number is allowed here.</p>
+only a single number (from 0 to 59) is allowed here.</p>
 </dd>
 </dl>
+<p>These restrictions on hour and minute apply both when creating and when
+updating a scheduled action, even for global administrators. Only
+<code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span></code> and <code class="docutils literal notranslate"><span class="pre">bin/schedule-edit</span></code> can bypass them (see
+<a class="reference internal" href="#system-scheduled-actions"><span class="std std-ref">System scheduled actions</span></a>).</p>
+<p>When using a step (<code class="docutils literal notranslate"><span class="pre">*/2</span></code> for instance), the step must be greater than or
+equal to 1. A step of <code class="docutils literal notranslate"><span class="pre">0</span></code> is rejected.</p>
+<p>The schedule must match at least one existing date. For instance, a schedule
+on the 31st day of February can never be run and is rejected when saving the
+scheduled action.</p>
 <p>Finally, if the action itself declares more parameters, they will be configurable there too.</p>
 <p>When you are done, click on the “Save” button.</p>
 <img alt="_images/scheduled-action-browse.png" src="_images/scheduled-action-browse.png" />
@@ -154,10 +165,27 @@ only a single number is allowed here.</p>
 it acts as if the owner was authenticated. So for instance, if an action
 creates an item without specifying an explicit owner, the action’s owner will
 be the owner of the new item.</p>
-<p>Currently it’s not possible to change the owner of a scheduled action.</p>
+<p>It’s not possible to change the owner of a scheduled action from the
+administration interface, but it can be done using <code class="docutils literal notranslate"><span class="pre">bin/schedule-edit</span></code> (see
+<a class="reference internal" href="#system-scheduled-actions"><span class="std std-ref">System scheduled actions</span></a>).</p>
+<p>If the owner’s account is deactivated, the scheduled action is not run
+anymore: each attempt is recorded as a failed run until the owner’s account is
+reactivated.</p>
+</section>
+<section id="run-history">
+<h2>Run history<a class="headerlink" href="#run-history" title="Link to this heading"></a></h2>
+<p>Runs are created and updated exclusively by the <code class="docutils literal notranslate"><span class="pre">cronical</span></code> script. Nobody,
+not even global administrators, can create or modify a run using the
+administration interface or the API. Global administrators can still view and
+delete runs.</p>
+</section>
+<section id="permissions">
+<h2>Permissions<a class="headerlink" href="#permissions" title="Link to this heading"></a></h2>
+<p>Only global administrators can manage scheduled actions. Site administrators
+have no access to scheduled actions nor to their runs.</p>
 </section>
 <section id="system-scheduled-actions">
-<h2>System scheduled actions<a class="headerlink" href="#system-scheduled-actions" title="Link to this heading"></a></h2>
+<span id="id1"></span><h2>System scheduled actions<a class="headerlink" href="#system-scheduled-actions" title="Link to this heading"></a></h2>
 <p>System admistrators have the ability to add special scheduled actions, called
 system scheduled actions. These scheduled actions appear in the Omeka S
 administration interface but they cannot be modified nor deleted.</p>
@@ -176,6 +204,25 @@ administration interface but they cannot be modified nor deleted.</p>
 <p><code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span></code> have the ability to bypass the limitation on hour and
 minute schedule, so it can be used to schedule an action every minute (for
 instance). It can also be used to add non-system scheduled actions.</p>
+<p>System scheduled actions can be modified using the script
+<code class="docutils literal notranslate"><span class="pre">bin/schedule-edit</span></code>. Only the properties given as options are modified. For
+instance, to run the scheduled action #1 every 5 minutes during working hours
+and keep only the 10 most recent runs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bin</span><span class="o">/</span><span class="n">schedule</span><span class="o">-</span><span class="n">edit</span> \
+    <span class="o">--</span><span class="nb">id</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">minute</span> <span class="s2">&quot;*/5&quot;</span> \
+    <span class="o">--</span><span class="n">hour</span> <span class="s2">&quot;8-18&quot;</span> \
+    <span class="o">--</span><span class="n">day</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">week</span> <span class="s2">&quot;1-5&quot;</span> \
+    <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">history</span><span class="o">-</span><span class="n">size</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>When the schedule is modified, the next run date is computed again.</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">bin/schedule-edit</span> <span class="pre">--help</span></code> for more documentation.</p>
+<p>Like <code class="docutils literal notranslate"><span class="pre">bin/schedule-add</span></code>, <code class="docutils literal notranslate"><span class="pre">bin/schedule-edit</span></code> bypasses the limitation on
+hour and minute schedule. It can also be used to modify non-system scheduled
+actions, to change the owner of a scheduled action, or to turn a scheduled
+action into a system scheduled action (<code class="docutils literal notranslate"><span class="pre">--system</span></code>) and vice versa
+(<code class="docutils literal notranslate"><span class="pre">--no-system</span></code>).</p>
 </section>
 </section>
 

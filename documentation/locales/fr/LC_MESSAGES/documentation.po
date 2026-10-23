@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Cronical\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 12:03+0200\n"
+"POT-Creation-Date: 2026-10-23 13:05+0200\n"
 "PO-Revision-Date: 2026-06-26 09:03+0200\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language: fr\n"
@@ -548,14 +548,15 @@ msgstr ""
 msgid ""
 "These restrictions on hour and minute apply both when creating and when "
 "updating a scheduled action, even for global administrators. Only ``bin/"
-"schedule-add`` can bypass them (see :ref:`system-scheduled-actions`)."
+"schedule-add`` and ``bin/schedule-edit`` can bypass them (see :ref:`system-"
+"scheduled-actions`)."
 msgstr ""
 "Ces restrictions sur l'heure et la minute s'appliquent aussi bien à la "
 "création qu'à la modification d'une action planifiée, y compris pour les "
-"administrateurs globaux. Seul ``bin/schedule-add`` permet de les contourner "
-"(voir :ref:`system-scheduled-actions`)."
+"administrateurs globaux. Seuls ``bin/schedule-add`` et ``bin/schedule-edit`` "
+"permettent de les contourner (voir :ref:`system-scheduled-actions`)."
 
-#: ../../scheduled-actions.rst:80
+#: ../../scheduled-actions.rst:81
 msgid ""
 "When using a step (``*/2`` for instance), the step must be greater than or "
 "equal to 1. A step of ``0`` is rejected."
@@ -563,7 +564,7 @@ msgstr ""
 "Lorsqu'un pas est utilisé (``*/2`` par exemple), il doit être supérieur ou "
 "égal à 1. Un pas de ``0`` est refusé."
 
-#: ../../scheduled-actions.rst:83
+#: ../../scheduled-actions.rst:84
 msgid ""
 "The schedule must match at least one existing date. For instance, a schedule "
 "on the 31st day of February can never be run and is rejected when saving the "
@@ -573,7 +574,7 @@ msgstr ""
 "exemple, une planification le 31 février ne peut jamais être exécutée et est "
 "refusée lors de l'enregistrement de l'action planifiée."
 
-#: ../../scheduled-actions.rst:87
+#: ../../scheduled-actions.rst:88
 msgid ""
 "Finally, if the action itself declares more parameters, they will be "
 "configurable there too."
@@ -581,15 +582,15 @@ msgstr ""
 "Enfin, si l'action elle-même déclare plus de paramètres, ils seront "
 "configurables ici."
 
-#: ../../scheduled-actions.rst:89
+#: ../../scheduled-actions.rst:90
 msgid "When you are done, click on the \"Save\" button."
 msgstr "Quand vous avez fini, cliquez sur le bouton \"Enregistrer\"."
 
-#: ../../scheduled-actions.rst:94
+#: ../../scheduled-actions.rst:95
 msgid "Scheduled action owner"
 msgstr "Propriétaire d'une action planifiée"
 
-#: ../../scheduled-actions.rst:96
+#: ../../scheduled-actions.rst:97
 msgid ""
 "Scheduled actions are owned by the user who created it. When an action is "
 "run, it acts as if the owner was authenticated. So for instance, if an "
@@ -602,13 +603,17 @@ msgstr ""
 "explicitement un propriétaire, le propriétaire de l'action planifiée sera le "
 "propriétaire du nouveau contenu."
 
-#: ../../scheduled-actions.rst:101
-msgid "Currently it's not possible to change the owner of a scheduled action."
+#: ../../scheduled-actions.rst:102
+msgid ""
+"It's not possible to change the owner of a scheduled action from the "
+"administration interface, but it can be done using ``bin/schedule-edit`` "
+"(see :ref:`system-scheduled-actions`)."
 msgstr ""
-"Actuellement il n'est pas possible de modifier le propriétaire d'une action "
-"planifiée."
+"Il n'est pas possible de modifier le propriétaire d'une action planifiée "
+"depuis l'interface d'administration, mais cela peut être fait avec ``bin/"
+"schedule-edit`` (voir :ref:`system-scheduled-actions`)."
 
-#: ../../scheduled-actions.rst:103
+#: ../../scheduled-actions.rst:106
 msgid ""
 "If the owner's account is deactivated, the scheduled action is not run "
 "anymore: each attempt is recorded as a failed run until the owner's account "
@@ -618,11 +623,11 @@ msgstr ""
 "exécutée : chaque tentative est enregistrée comme une exécution en erreur "
 "jusqu'à la réactivation du compte du propriétaire."
 
-#: ../../scheduled-actions.rst:108
+#: ../../scheduled-actions.rst:111
 msgid "Run history"
 msgstr "Historique d'exécutions"
 
-#: ../../scheduled-actions.rst:110
+#: ../../scheduled-actions.rst:113
 msgid ""
 "Runs are created and updated exclusively by the ``cronical`` script. Nobody, "
 "not even global administrators, can create or modify a run using the "
@@ -635,11 +640,11 @@ msgstr ""
 "administrateurs globaux peuvent toutefois consulter et supprimer les "
 "exécutions."
 
-#: ../../scheduled-actions.rst:116
+#: ../../scheduled-actions.rst:119
 msgid "Permissions"
 msgstr "Permissions"
 
-#: ../../scheduled-actions.rst:118
+#: ../../scheduled-actions.rst:121
 msgid ""
 "Only global administrators can manage scheduled actions. Site administrators "
 "have no access to scheduled actions nor to their runs."
@@ -648,11 +653,11 @@ msgstr ""
 "administrateurs de site n'ont accès ni aux actions planifiées ni à leurs "
 "exécutions."
 
-#: ../../scheduled-actions.rst:124
+#: ../../scheduled-actions.rst:127
 msgid "System scheduled actions"
 msgstr "Actions planifiées système"
 
-#: ../../scheduled-actions.rst:126
+#: ../../scheduled-actions.rst:129
 msgid ""
 "System admistrators have the ability to add special scheduled actions, "
 "called system scheduled actions. These scheduled actions appear in the Omeka "
@@ -663,7 +668,7 @@ msgstr ""
 "planifiées apparaissent dans l'interface d'administration Omeka S mais ne "
 "peuvent pas être modifiées ni supprimées."
 
-#: ../../scheduled-actions.rst:130
+#: ../../scheduled-actions.rst:133
 msgid ""
 "System scheduled actions can be added using the script ``bin/schedule-add``. "
 "A typical usage would be::"
@@ -671,16 +676,16 @@ msgstr ""
 "Les actions planifiées système peuvent être ajoutées en utilisant le script "
 "``bin/schedule-add``. Une utilisation typique ressemble à ça::"
 
-#: ../../scheduled-actions.rst:140
+#: ../../scheduled-actions.rst:143
 msgid "Scheduled actions added by this script are immediately active."
 msgstr ""
 "Les actions planifiées ajoutées par ce script sont actives immédiatement."
 
-#: ../../scheduled-actions.rst:142
+#: ../../scheduled-actions.rst:145
 msgid "Run ``bin/schedule-add --help`` for more documentation."
 msgstr "Exécutez ``bin/schedule-add --help`` pour plus de documentation."
 
-#: ../../scheduled-actions.rst:144
+#: ../../scheduled-actions.rst:147
 msgid ""
 "``bin/schedule-add`` have the ability to bypass the limitation on hour and "
 "minute schedule, so it can be used to schedule an action every minute (for "
@@ -690,3 +695,40 @@ msgstr ""
 "l'heure et la minute, donc il peut être utilisé pour planifier une action "
 "toutes les minutes (par exemple). Il peut aussi être utilisé pour ajouter "
 "des actions planifiées non-système."
+
+#: ../../scheduled-actions.rst:151
+msgid ""
+"System scheduled actions can be modified using the script ``bin/schedule-"
+"edit``. Only the properties given as options are modified. For instance, to "
+"run the scheduled action #1 every 5 minutes during working hours and keep "
+"only the 10 most recent runs::"
+msgstr ""
+"Les actions planifiées système peuvent être modifiées avec le script ``bin/"
+"schedule-edit``. Seules les propriétés passées en options sont modifiées. "
+"Par exemple, pour exécuter l'action planifiée n°1 toutes les 5 minutes "
+"pendant les heures ouvrées et ne conserver que les 10 exécutions les plus "
+"récentes ::"
+
+#: ../../scheduled-actions.rst:163
+msgid "When the schedule is modified, the next run date is computed again."
+msgstr ""
+"Lorsque la planification est modifiée, la date de la prochaine exécution est "
+"recalculée."
+
+#: ../../scheduled-actions.rst:165
+msgid "Run ``bin/schedule-edit --help`` for more documentation."
+msgstr "Exécutez ``bin/schedule-edit --help`` pour plus de documentation."
+
+#: ../../scheduled-actions.rst:167
+msgid ""
+"Like ``bin/schedule-add``, ``bin/schedule-edit`` bypasses the limitation on "
+"hour and minute schedule. It can also be used to modify non-system scheduled "
+"actions, to change the owner of a scheduled action, or to turn a scheduled "
+"action into a system scheduled action (``--system``) and vice versa (``--no-"
+"system``)."
+msgstr ""
+"Comme ``bin/schedule-add``, ``bin/schedule-edit`` contourne la limitation "
+"sur l'heure et la minute. Il peut aussi être utilisé pour modifier des "
+"actions planifiées non système, pour changer le propriétaire d'une action "
+"planifiée, ou pour transformer une action planifiée en action planifiée "
+"système (``--system``) et inversement (``--no-system``)."

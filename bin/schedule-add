@@ -1,9 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-$opts = getopt('hv', ['help', 'verbose', 'owner-id:', 'cron-expression:', 'system', 'action:', 'name:', 'settings:']);
+$opts = getopt('h', ['help', 'owner-id:', 'cron-expression:', 'system', 'action:', 'name:', 'settings:']);
 $help = isset($opts['h']) || isset($opts['help']);
-$verbose = isset($opts['v']) || isset($opts['verbose']);
 $system = isset($opts['system']);
 $owner_id = intval($opts['owner-id'] ?? 0);
 $cron_expression = $opts['cron-expression'] ?? '';
@@ -42,9 +41,6 @@ if ($help) {
         -h, --help
             Print this help and exit
 
-        -v, --verbose
-            Increase verbosity
-
     USAGE;
     exit;
 }
@@ -69,6 +65,7 @@ if ($action_settings_json !== null) {
     $action_settings = json_decode($action_settings_json, true);
     if ($action_settings === null) {
         fprintf(STDERR, "Error: Failed to decode JSON: %s\n", $action_settings_json);
+        exit(1);
     }
 }
 

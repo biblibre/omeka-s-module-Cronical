@@ -75,7 +75,8 @@ Minute
 
 These restrictions on hour and minute apply both when creating and when
 updating a scheduled action, even for global administrators. Only
-``bin/schedule-add`` can bypass them (see :ref:`system-scheduled-actions`).
+``bin/schedule-add`` and ``bin/schedule-edit`` can bypass them (see
+:ref:`system-scheduled-actions`).
 
 When using a step (``*/2`` for instance), the step must be greater than or
 equal to 1. A step of ``0`` is rejected.
@@ -98,7 +99,9 @@ it acts as if the owner was authenticated. So for instance, if an action
 creates an item without specifying an explicit owner, the action's owner will
 be the owner of the new item.
 
-Currently it's not possible to change the owner of a scheduled action.
+It's not possible to change the owner of a scheduled action from the
+administration interface, but it can be done using ``bin/schedule-edit`` (see
+:ref:`system-scheduled-actions`).
 
 If the owner's account is deactivated, the scheduled action is not run
 anymore: each attempt is recorded as a failed run until the owner's account is
@@ -144,3 +147,25 @@ Run ``bin/schedule-add --help`` for more documentation.
 ``bin/schedule-add`` have the ability to bypass the limitation on hour and
 minute schedule, so it can be used to schedule an action every minute (for
 instance). It can also be used to add non-system scheduled actions.
+
+System scheduled actions can be modified using the script
+``bin/schedule-edit``. Only the properties given as options are modified. For
+instance, to run the scheduled action #1 every 5 minutes during working hours
+and keep only the 10 most recent runs::
+
+    bin/schedule-edit \
+        --id 1 \
+        --minute "*/5" \
+        --hour "8-18" \
+        --day-of-week "1-5" \
+        --run-history-size 10
+
+When the schedule is modified, the next run date is computed again.
+
+Run ``bin/schedule-edit --help`` for more documentation.
+
+Like ``bin/schedule-add``, ``bin/schedule-edit`` bypasses the limitation on
+hour and minute schedule. It can also be used to modify non-system scheduled
+actions, to change the owner of a scheduled action, or to turn a scheduled
+action into a system scheduled action (``--system``) and vice versa
+(``--no-system``).

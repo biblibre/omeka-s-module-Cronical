@@ -1,0 +1,236 @@
+#!/usr/bin/env php
+<?php
+
+$opts = getopt('h', [
+    'help',
+    'id:',
+    'owner-id:',
+    'name:',
+    'cron-expression:',
+    'minute:',
+    'hour:',
+    'day-of-month:',
+    'month:',
+    'day-of-week:',
+    'active',
+    'inactive',
+    'system',
+    'no-system',
+    'run-history-size:',
+    'settings:',
+]);
+$help = isset($opts['h']) || isset($opts['help']);
+$id = intval($opts['id'] ?? 0);
+$owner_id = isset($opts['owner-id']) ? intval($opts['owner-id']) : null;
+$name = $opts['name'] ?? null;
+$cron_expression = $opts['cron-expression'] ?? null;
+$minute = $opts['minute'] ?? null;
+$hour = $opts['hour'] ?? null;
+$day_of_month = $opts['day-of-month'] ?? null;
+$month = $opts['month'] ?? null;
+$day_of_week = $opts['day-of-week'] ?? null;
+$run_history_size = $opts['run-history-size'] ?? null;
+$action_settings_json = $opts['settings'] ?? null;
+
+if ($help) {
+    echo <<<'USAGE'
+    Usage: schedule-edit --id <id> [options...]
+           schedule-edit --help
+
+    Only the properties given as options are modified.
+
+    Options:
+        --id <id>
+            ID of the scheduled action to modify
+            Required
+
+        --owner-id <user-id>
+            ID of the new action owner
+
+        --name <name>
+            Descriptive name of the scheduled action
+
+        --cron-expression <cron-expression>
+            Action schedule as a cron expression ("m h dom mon dow")
+            Cannot be used with --minute, --hour, --day-of-month, --month or
+            --day-of-week
+
+        --minute <minute>
+        --hour <hour>
+        --day-of-month <day-of-month>
+        --month <month>
+        --day-of-week <day-of-week>
+            Modify only one field of the schedule
+            Any valid cron expression is allowed, including for minute and hour
+
+        --active
+        --inactive
+            Activate or deactivate the scheduled action
+
+        --system
+        --no-system
+            Turn the scheduled action into a system action, or into a normal
+            one.
+            System actions cannot be modified or deleted from the admin interface.
+
+        --run-history-size <size>
+            Number of runs to keep in history (must be greater than 0)
+
+        --settings <settings-in-json>
+            Action settings in JSON format. Replaces existing settings.
+
+        -h, --help
+            Print this help and exit
+
+    USAGE;
+    exit;
+}
+
+if (!$id) {
+    fprintf(STDERR, "Error: Missing required --id\n");
+    exit(1);
+}
+
+if ($owner_id !== null && $owner_id < 1) {
+    fprintf(STDERR, "Error: Invalid value for --owner-id: %s\n", $opts['owner-id']);
+    exit(1);
+}
+
+$schedule_fields = [$minute, $hour, $day_of_month, $month, $day_of_week];
+if ($cron_expression !== null && array_filter($schedule_fields, fn ($field) => $field !== null)) {
+    fprintf(STDERR, "Error: --cron-expression cannot be used with --minute, --hour, --day-of-month, --month or --day-of-week\n");
+    exit(1);
+}
+
+if (isset($opts['active']) && isset($opts['inactive'])) {
+    fprintf(STDERR, "Error: --active and --inactive cannot be used together\n");
+    exit(1);
+}
+
+if (isset($opts['system']) && isset($opts['no-system'])) {
+    fprintf(STDERR, "Error: --system and --no-system cannot be used together\n");
+    exit(1);
+}
+
+if ($run_history_size !== null) {
+    if (!preg_match('/^[1-9]\d*$/', $run_history_size)) {
+        fprintf(STDERR, "Error: Invalid value for --run-history-size: %s\n", $run_history_size);
+        exit(1);
+    }
+    $run_history_size = intval($run_history_size);
+}
+
+$action_settings = null;
+if ($action_settings_json !== null) {
+    $action_settings = json_decode($action_settings_json, true);
+    if (!is_array($action_settings)) {
+        fprintf(STDERR, "Error: Failed to decode JSON object: %s\n", $action_settings_json);
+        exit(1);
+    }
+}
+
+require dirname(__DIR__, 3) . '/bootstrap.php';
+$application = Omeka\Mvc\Application::init(require 'application/config/application.config.php');
+$services = $application->getServiceManager();
+
+$moduleManager = $services->get('Omeka\ModuleManager');
+$module = $moduleManager->getModule('Cronical');
+if (!$module || $module->getState() !== 'active') {
+    fprintf(STDERR, "Error: Cronical module is not active\n");
+    exit(1);
+}
+
+// The API is not used here because it forbids modifications of system actions
+// and restricts minute and hour fields
+$em = $services->get('Omeka\EntityManager');
+$settings = $services->get('Omeka\Settings');
+
+$scheduledAction = $em->find('Cronical\Entity\ScheduledAction', $id);
+if (!$scheduledAction) {
+    fprintf(STDERR, "Error: Scheduled action #%d does not exist\n", $id);
+    exit(1);
+}
+
+if ($owner_id !== null) {
+    $owner = $em->find('Omeka\Entity\User', $owner_id);
+    if (!$owner) {
+        fprintf(STDERR, "Error: User #%d does not exist\n", $owner_id);
+        exit(1);
+    }
+    if (!$owner->isActive()) {
+        fprintf(STDERR, "Warning: User #%d is not active. The scheduled action will not run until the user is activated\n", $owner_id);
+    }
+    $scheduledAction->setOwner($owner);
+}
+
+if ($name !== null) {
+    $scheduledAction->setName($name);
+}
+
+if ($cron_expression !== null) {
+    $parts = explode(' ', trim($cron_expression));
+    if (count($parts) !== 5) {
+        fprintf(STDERR, "Error: Invalid cron expression: %s\n", $cron_expression);
+        exit(1);
+    }
+    [$minute, $hour, $day_of_month, $month, $day_of_week] = $parts;
+}
+
+$scheduleSetters = [
+    'setMinute' => ['validateMinuteExpression', $minute],
+    'setHour' => ['validateHourExpression', $hour],
+    'setDayOfMonth' => ['validateDayOfMonthExpression', $day_of_month],
+    'setMonth' => ['validateMonthExpression', $month],
+    'setDayOfWeek' => ['validateDayOfWeekExpression', $day_of_week],
+];
+$scheduleModified = false;
+foreach ($scheduleSetters as $setter => [$validator, $value]) {
+    if ($value === null) {
+        continue;
+    }
+
+    $value = trim($value);
+    try {
+        Cronical\Stdlib\CronExpression::$validator($value);
+    } catch (Exception $e) {
+        fprintf(STDERR, "Error: %s\n", $e->getMessage());
+        exit(1);
+    }
+
+    $scheduledAction->$setter($value);
+    $scheduleModified = true;
+}
+
+if ($scheduleModified) {
+    $timezone = new DateTimeZone($settings->get('time_zone', 'UTC'));
+    try {
+        $cronExpression = new Cronical\Stdlib\CronExpression($scheduledAction->getCronExpression(), $timezone);
+        $scheduledAction->setScheduled($cronExpression->getNextDate());
+    } catch (Exception $e) {
+        fprintf(STDERR, "Error: %s\n", $e->getMessage());
+        exit(1);
+    }
+
+    fprintf(STDOUT, "Next run scheduled at %s\n", $scheduledAction->getScheduled()->format('Y-m-d H:i:s T'));
+}
+
+if (isset($opts['active']) || isset($opts['inactive'])) {
+    $scheduledAction->setIsActive(isset($opts['active']));
+}
+
+if (isset($opts['system']) || isset($opts['no-system'])) {
+    $scheduledAction->setIsSystem(isset($opts['system']));
+}
+
+if ($run_history_size !== null) {
+    $scheduledAction->setRunHistorySize($run_history_size);
+}
+
+if ($action_settings !== null) {
+    $scheduledAction->setSettings($action_settings);
+}
+
+$scheduledAction->setModified(new DateTime('now'));
+$em->flush();
+
+fprintf(STDOUT, "Scheduled action #%d updated\n", $scheduledAction->getId());

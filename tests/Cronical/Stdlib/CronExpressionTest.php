@@ -71,6 +71,13 @@ class CronExpressionTest extends TestCase
         $this->assertCronExpressionNotValid('* * * * 5-1');
         $this->assertCronExpressionNotValid('* * * * fri-sun');
         $this->assertCronExpressionNotValid('* * * * fri-mon');
+
+        // A step of 0 would cause an infinite loop
+        $this->assertCronExpressionNotValid('*/0 * * * *');
+        $this->assertCronExpressionNotValid('* 0-23/0 * * *');
+        $this->assertCronExpressionNotValid('* * */00 * *');
+        $this->assertCronExpressionNotValid('* * * */0 *');
+        $this->assertCronExpressionNotValid('* * * * */0');
     }
 
     public function testGetNextDateWithImpossibleDate()

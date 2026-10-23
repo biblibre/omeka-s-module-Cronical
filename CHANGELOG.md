@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prevent inactive users to run scheduled actions
 - Prevent creation of a scheduled action with something else than a single
   value for hour or minute fields
+- Prevent using "0" as step in cron expressions
 
 ## [0.1.1] - 2026-06-29
 

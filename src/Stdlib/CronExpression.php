@@ -82,7 +82,7 @@ class CronExpression
 
     public static function validateMinuteExpression(string $expression): void
     {
-        if (!preg_match('/^(?<value>(\*|(?<number>0?[0-9]|[1-5][0-9])(-(?&number))?)(\/\d+)?)(,(?&value))*$/', $expression)) {
+        if (!preg_match('/^(?<value>(\*|(?<number>0?[0-9]|[1-5][0-9])(-(?&number))?)(\/[1-9]\d*)?)(,(?&value))*$/', $expression)) {
             throw new Exception(sprintf('Invalid minute expression: %s', $expression));
         }
 
@@ -98,7 +98,7 @@ class CronExpression
 
     public static function validateHourExpression(string $expression): void
     {
-        if (!preg_match('/^(?<value>(\*|(?<number>0?[0-9]|1[0-9]|2[0-3])(-(?&number))?)(\/\d+)?)(,(?&value))*$/', $expression)) {
+        if (!preg_match('/^(?<value>(\*|(?<number>0?[0-9]|1[0-9]|2[0-3])(-(?&number))?)(\/[1-9]\d*)?)(,(?&value))*$/', $expression)) {
             throw new Exception(sprintf('Invalid hour expression: %s', $expression));
         }
 
@@ -114,7 +114,7 @@ class CronExpression
 
     public static function validateDayOfMonthExpression(string $expression): void
     {
-        if (!preg_match('/^(?<value>(\*|(?<number>0?[1-9]|[1-2][0-9]|3[0-1])(-(?&number))?)(\/\d+)?)(,(?&value))*$/', $expression)) {
+        if (!preg_match('/^(?<value>(\*|(?<number>0?[1-9]|[1-2][0-9]|3[0-1])(-(?&number))?)(\/[1-9]\d*)?)(,(?&value))*$/', $expression)) {
             throw new Exception(sprintf('Invalid day of month expression: %s', $expression));
         }
 
@@ -131,7 +131,7 @@ class CronExpression
     public static function validateMonthExpression(string $expression): void
     {
         $monthAliasRegex = implode('|', array_keys(self::MONTH_ALIASES));
-        if (!preg_match("/^(?<value>(\*|(?<month>0?[1-9]|1[0-2]|$monthAliasRegex)(-(?&month))?)(\/\d+)?)(,(?&value))*$/i", $expression)) {
+        if (!preg_match("/^(?<value>(\*|(?<month>0?[1-9]|1[0-2]|$monthAliasRegex)(-(?&month))?)(\/[1-9]\d*)?)(,(?&value))*$/i", $expression)) {
             throw new Exception(sprintf('Invalid month expression: %s', $expression));
         }
 
@@ -151,7 +151,7 @@ class CronExpression
     public static function validateDayOfWeekExpression(string $expression): void
     {
         $dayOfWeekAliasRegex = implode('|', array_keys(self::DAY_OF_WEEK_ALIASES));
-        if (!preg_match("/^(?<value>(\*|(?<dayOfWeek>0?[0-6]|$dayOfWeekAliasRegex)(-(?&dayOfWeek))?)(\/\d+)?)(,(?&value))*$/i", $expression)) {
+        if (!preg_match("/^(?<value>(\*|(?<dayOfWeek>0?[0-6]|$dayOfWeekAliasRegex)(-(?&dayOfWeek))?)(\/[1-9]\d*)?)(,(?&value))*$/i", $expression)) {
             throw new Exception(sprintf('Invalid day of week expression: %s', $expression));
         }
 

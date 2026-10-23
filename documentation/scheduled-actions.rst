@@ -67,11 +67,22 @@ Day of month
 
 Hour
     The hour at which the action will be run. Unlike the other parameters, only
-    a single number is allowed here.
+    a single number (from 0 to 23) is allowed here.
 
 Minute
     The minute at which the action will be run. Unlike the other parameters,
-    only a single number is allowed here.
+    only a single number (from 0 to 59) is allowed here.
+
+These restrictions on hour and minute apply both when creating and when
+updating a scheduled action, even for global administrators. Only
+``bin/schedule-add`` can bypass them (see :ref:`system-scheduled-actions`).
+
+When using a step (``*/2`` for instance), the step must be greater than or
+equal to 1. A step of ``0`` is rejected.
+
+The schedule must match at least one existing date. For instance, a schedule
+on the 31st day of February can never be run and is rejected when saving the
+scheduled action.
 
 Finally, if the action itself declares more parameters, they will be configurable there too.
 
@@ -88,6 +99,26 @@ creates an item without specifying an explicit owner, the action's owner will
 be the owner of the new item.
 
 Currently it's not possible to change the owner of a scheduled action.
+
+If the owner's account is deactivated, the scheduled action is not run
+anymore: each attempt is recorded as a failed run until the owner's account is
+reactivated.
+
+Run history
+-----------
+
+Runs are created and updated exclusively by the ``cronical`` script. Nobody,
+not even global administrators, can create or modify a run using the
+administration interface or the API. Global administrators can still view and
+delete runs.
+
+Permissions
+-----------
+
+Only global administrators can manage scheduled actions. Site administrators
+have no access to scheduled actions nor to their runs.
+
+.. _system-scheduled-actions:
 
 System scheduled actions
 ------------------------

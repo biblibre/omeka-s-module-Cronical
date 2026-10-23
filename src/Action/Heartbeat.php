@@ -65,7 +65,6 @@ class Heartbeat extends AbstractAction implements LoggerAwareInterface
 
     public function perform(ScheduledActionRunRepresentation $scheduledActionRun): void
     {
-
         $this->logger->log(
             intval($scheduledActionRun->setting('log_level', Logger::DEBUG)),
             'Cronical: Heartbeat'

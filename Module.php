@@ -22,9 +22,23 @@ class Module extends AbstractModule
         $em = $serviceLocator->get('Omeka\EntityManager');
 
         // Deny Cronical access to site admins
-        $acl->deny('site_admin', 'Cronical\Controller\Admin\ScheduledAction');
-        $acl->deny('site_admin', 'Cronical\Api\Adapter\ScheduledActionAdapter');
-        $acl->deny('site_admin', 'Cronical\Entity\ScheduledAction');
+        $acl->deny('site_admin', [
+            'Cronical\Controller\Admin\ScheduledAction',
+            'Cronical\Controller\Admin\ScheduledActionRun',
+            'Cronical\Api\Adapter\ScheduledActionAdapter',
+            'Cronical\Api\Adapter\ScheduledActionRunAdapter',
+            'Cronical\Entity\ScheduledAction',
+            'Cronical\Entity\ScheduledActionRun',
+        ]);
+
+        // Scheduled action runs are only created and updated by bin/cronical,
+        // which does not use the API
+        // Roles must be listed explicitly: allow('global_admin') creates a
+        // rule on every resource, which takes precedence over deny(null, ...)
+        $acl->deny($acl->getRoles(), [
+            'Cronical\Api\Adapter\ScheduledActionRunAdapter',
+            'Cronical\Entity\ScheduledActionRun',
+        ], ['create', 'update', 'batch_update']);
 
         // Forbid minute and hour ranges even for global administrators
         // This privilege is only given when using the script bin/schedule-add

@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   value for hour or minute fields
 - Prevent using "0" as step in cron expressions
 - Prevent SQL injection in `onApiSearchQuery`
+- Forbid every user (even global admins) to create or update scheduled action
+  runs using the web interface or the API. This responsibility belongs to
+  `bin/cronical` only.
 
 ## [0.1.1] - 2026-06-29
 

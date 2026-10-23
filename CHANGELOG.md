@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prevent creation of a scheduled action with something else than a single
   value for hour or minute fields
 - Prevent using "0" as step in cron expressions
+- Prevent SQL injection in `onApiSearchQuery`
 
 ## [0.1.1] - 2026-06-29
 

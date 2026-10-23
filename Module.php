@@ -84,17 +84,14 @@ class Module extends AbstractModule
         if (!is_array($ids)) {
             $ids = [$ids];
         }
-        $ids = array_filter($ids);
-        if ($ids) {
-            $entityClass = $adapter->getEntityClass();
-            if ($entityClass === 'Omeka\Entity\Job') {
-                $subQb = $adapter->getEntityManager()->createQueryBuilder();
-                $subQb->select('j')
-                      ->from('Cronical\Entity\ScheduledAction', 't')
-                      ->innerJoin('t.jobs', 'j')
-                      ->where($subQb->expr()->in('t.id', $ids))
-                      ->andWhere('j = omeka_root');
-            }
+        $ids = array_filter(array_map('intval', array_filter($ids, 'is_scalar')));
+        if ($ids && $adapter->getEntityClass() === 'Omeka\Entity\Job') {
+            $runAlias = $adapter->createAlias();
+            $subQb = $adapter->getEntityManager()->createQueryBuilder();
+            $subQb->select($runAlias)
+                  ->from('Cronical\Entity\ScheduledActionRun', $runAlias)
+                  ->where($subQb->expr()->in("$runAlias.scheduledAction", $adapter->createNamedParameter($qb, $ids)))
+                  ->andWhere("$runAlias.job = omeka_root");
             $qb->andWhere($qb->expr()->exists($subQb->getDQL()));
         }
     }

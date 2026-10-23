@@ -84,8 +84,7 @@ class ScheduledActionAdapter extends AbstractEntityAdapter
             try {
                 CronExpression::validateMinuteExpression($minute);
 
-                if ($request->getOperation() === Request::UPDATE
-                    && $entity->getMinute() !== $minute
+                if (($request->getOperation() === Request::CREATE || $entity->getMinute() !== $minute)
                     && !preg_match('/^[0-5]?[0-9]$/', $minute)
                 ) {
                     $this->authorize($entity, 'schedule-anything');
@@ -104,9 +103,8 @@ class ScheduledActionAdapter extends AbstractEntityAdapter
             try {
                 CronExpression::validateHourExpression($hour);
 
-                if ($request->getOperation() === Request::UPDATE
-                    && $entity->getHour() !== $hour
-                    && !preg_match('/^[0-1]?[0-9]|2[0-3]$/', $hour)
+                if (($request->getOperation() === Request::CREATE || $entity->getHour() !== $hour)
+                    && !preg_match('/^([0-1]?[0-9]|2[0-3])$/', $hour)
                 ) {
                     $this->authorize($entity, 'schedule-anything');
                 }

@@ -38,6 +38,8 @@ class CronExpression
         'DEC' => 12,
     ];
 
+    public const MAX_SEARCH_YEARS = 400;
+
     public const DAY_OF_WEEK_ALIASES = [
         'SUN' => 0,
         'MON' => 1,
@@ -265,7 +267,23 @@ class CronExpression
             $year++;
         }
 
+        // The Gregorian calendar repeats itself every 400 years, so if no
+        // date matches within that period, no date will ever match
+        // (for instance "0 0 31 2 *")
+        $maxYear = $year + self::MAX_SEARCH_YEARS;
+
         while (true) {
+            if ($year > $maxYear) {
+                throw new Exception(sprintf(
+                    'No date matches cron expression: %s %s %s %s %s',
+                    $this->minute,
+                    $this->hour,
+                    $this->dayOfMonth,
+                    $this->month,
+                    $this->dayOfWeek
+                ));
+            }
+
             $month = $allowedMonths[$allowedMonthIndex];
             $dayOfMonth = $allowedDayOfMonths[$allowedDayOfMonthIndex];
 

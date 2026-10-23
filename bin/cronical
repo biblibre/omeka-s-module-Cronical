@@ -81,6 +81,7 @@ while ($scheduledActionAssoc) {
             $scheduledActionAssoc['day_of_week'],
         );
         $cronExpression = new Cronical\Stdlib\CronExpression($cronExpressionString, $timezone);
+        $nextDate = $cronExpression->getNextDate();
     } catch (Exception $e) {
         fprintf(STDERR, "Error: Invalid cron expression for scheduled action #%d: %s\n", $scheduledActionId, $cronExpressionString);
         $excluded_scheduled_action_ids[] = $scheduledActionId;
@@ -106,7 +107,7 @@ while ($scheduledActionAssoc) {
     $connection->update(
         'cronical_scheduled_action',
         [
-            'scheduled' => $cronExpression->getNextDate()->format('Y-m-d H:i:s')
+            'scheduled' => $nextDate->format('Y-m-d H:i:s')
         ],
         ['id' => $scheduledActionId]
     );

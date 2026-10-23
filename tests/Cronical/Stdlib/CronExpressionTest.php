@@ -73,6 +73,18 @@ class CronExpressionTest extends TestCase
         $this->assertCronExpressionNotValid('* * * * fri-mon');
     }
 
+    public function testGetNextDateWithImpossibleDate()
+    {
+        foreach (['0 0 31 2 *', '0 0 30 2 *', '0 0 31 4,6,9,11 *'] as $expression) {
+            $exception = null;
+            try {
+                $this->getNextDate($expression, '2025-01-01 00:00');
+            } catch (Exception $exception) {
+            }
+            $this->assertNotNull($exception, "No date matches $expression");
+        }
+    }
+
     public function testGetNextDate()
     {
         $this->assertEquals(
